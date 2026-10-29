@@ -1,0 +1,2954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hind.com</title>
+  <link rel="icon" type="image/x-icon" href="icon.jpg">
+  <link rel="apple-touch-icon" href="icon.jpg">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap"
+    rel="stylesheet">
+  <!-- Bootstrap & FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Document Parsing (PDF & Word DOCX) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --nav-link-color: #475569;
+      --nav-link-hover-bg: rgba(37, 99, 235, 0.08);
+      --chip-bg: #ffffff;
+      --chip-border: #e2e8f0;
+      --chip-color: #475569;
+      --input-bg: #ffffff;
+      --input-border: #e2e8f0;
+      --input-text: #1e293b;
+      --input-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      --footer-bg: #ffffff;
+      --footer-border: #e2e8f0;
+      --search-btn-bg: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #0f172a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --nav-link-color: #cbd5e1;
+      --nav-link-hover-bg: rgba(255, 255, 255, 0.08);
+      --chip-bg: #1e293b;
+      --chip-border: #334155;
+      --chip-color: #cbd5e1;
+      --input-bg: #1e293b;
+      --input-border: #334155;
+      --input-text: #f8fafc;
+      --input-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      --footer-bg: #0f172a;
+      --footer-border: #1e293b;
+      --search-btn-bg: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-color);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 0;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Top Navigation Header */
+    .header-nav {
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .theme-toggle-btn {
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      color: var(--nav-link-color);
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: all 0.25 ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+    }
+
+    .theme-toggle-btn:hover {
+      color: #2563eb;
+      border-color: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .nav-link-custom {
+      color: var(--nav-link-color);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+    }
+
+    .nav-link-custom:hover {
+      color: #2563eb;
+      background: var(--nav-link-hover-bg);
+    }
+
+    /* Central Search Container */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* Logo Styling */
+    .logo-container {
+      margin-bottom: 2rem;
+      text-align: center;
+      user-select: none;
+    }
+
+    .logo-brand-link {
+      display: inline-block;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background: #ffffff;
+      padding: 16px 38px;
+      border-radius: 60px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Oval Shaped Picture (Pt 1) */
+    .logo-img {
+      max-width: 290px;
+      max-height: 180px;
+      width: auto;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 35px;
+      mix-blend-mode: multiply;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    [data-theme="dark"] .logo-brand-link {
+      background: rgba(255, 255, 255, 0.96);
+      border-color: transparent;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .logo-brand-link:hover {
+      transform: scale(1.04);
+      box-shadow: 0 14px 35px rgba(37, 99, 235, 0.15);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+
+    .tagline {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-top: 0.75rem;
+    }
+
+    /* Search Form & Input */
+    .search-box-wrapper {
+      width: 100%;
+      position: relative;
+    }
+
+    .search-form {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input-group {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon-left {
+      position: absolute;
+      left: 1.25rem;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 62px;
+      padding: 0 6.5rem 0 3.25rem;
+      border-radius: 32px;
+      border: 2px solid var(--input-border);
+      background: var(--input-bg);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--input-text);
+      box-shadow: var(--input-shadow);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 12px 30px -5px rgba(37, 99, 235, 0.3), 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+
+    .form-input:focus~.search-icon-left {
+      color: #2563eb;
+    }
+
+    .voice-search-btn {
+      position: absolute;
+      right: 3.85rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.15rem;
+      transition: all 0.2s ease;
+      z-index: 2;
+    }
+
+    .voice-search-btn:hover {
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    .voice-search-btn:active {
+      transform: scale(0.92);
+    }
+
+    .voice-search-btn.listening {
+      color: #dc2626;
+      background: rgba(220, 38, 38, 0.1);
+      animation: micPulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes micPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.35);
+      }
+
+      50% {
+        box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+      }
+    }
+
+    .search-btn-right {
+      position: absolute;
+      right: 0.5rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: var(--search-btn-bg);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      z-index: 2;
+    }
+
+    .search-btn-right:hover {
+      transform: scale(1.06);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.45);
+    }
+
+    .search-btn-right:active {
+      transform: scale(0.95);
+    }
+
+    /* Recent Searches Suggestions Dropdown */
+    .suggest-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: var(--card-bg, #ffffff);
+      border: 1.5px solid var(--border-color, rgba(0, 0, 0, 0.12));
+      border-radius: 20px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.15);
+      padding: 0.5rem 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    [data-theme="dark"] .suggest-dropdown {
+      background: #0f172a;
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+      color: #f8fafc;
+    }
+
+    .suggest-dropdown.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .suggest-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.4rem 1.1rem 0.45rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    [data-theme="dark"] .suggest-header {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+    }
+
+    .suggest-clear-all {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      transition: background 0.15s ease;
+    }
+
+    .suggest-clear-all:hover {
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .suggest-list {
+      max-height: 280px;
+      overflow-y: auto;
+      margin: 0;
+      padding: 0.25rem 0;
+      list-style: none;
+    }
+
+    .suggest-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1.1rem;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-main, #1e293b);
+      cursor: pointer;
+      transition: background 0.15s ease, opacity 0.22s ease, transform 0.22s ease, max-height 0.22s ease, padding 0.22s ease;
+    }
+
+    [data-theme="dark"] .suggest-item {
+      color: #e2e8f0;
+    }
+
+    .suggest-item:hover,
+    .suggest-item.active {
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    [data-theme="dark"] .suggest-item:hover,
+    [data-theme="dark"] .suggest-item.active {
+      background: rgba(37, 99, 235, 0.22);
+    }
+
+    .suggest-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .suggest-item-icon {
+      font-size: 0.82rem;
+      color: var(--text-muted, #94a3b8);
+      flex-shrink: 0;
+    }
+
+    .suggest-match-hl {
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    [data-theme="dark"] .suggest-match-hl {
+      color: #60a5fa;
+    }
+
+    .suggest-delete-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted, #94a3b8);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .suggest-delete-btn:hover {
+      background: rgba(239, 68, 68, 0.12);
+      color: #ef4444;
+    }
+
+    /* Removal animation */
+    .suggest-item.removing {
+      opacity: 0;
+      transform: translateX(-15px);
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      overflow: hidden;
+    }
+
+    /* Quick Badges / Suggestion Chips */
+    .quick-chips {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .chip {
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      color: var(--chip-color);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.4rem 0.95rem;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    }
+
+    .chip:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    /* Footer Styling */
+    .footer-container {
+      padding: 1.75rem 1rem;
+      text-align: center;
+      border-top: 1px solid var(--footer-border);
+      background: var(--footer-bg);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .footer-links {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+
+    .v-divider {
+      color: var(--border-color);
+    }
+
+    /* ── Visitor IP Address Bar ── */
+    .ip-info-bar {
+      text-align: center;
+      padding: 0.6rem 1rem;
+      background: var(--footer-bg);
+      border-top: 1px solid var(--footer-border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .ip-info-bar .ip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      display: inline-block;
+      flex-shrink: 0;
+      animation: ip-blink 2.2s ease-in-out infinite;
+    }
+
+    @keyframes ip-blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.35;
+      }
+    }
+
+    .ip-info-bar a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .ip-info-bar a:hover {
+      color: #2563eb;
+    }
+
+    /* ── Header settings button ── */
+    .settings-btn {
+      background: var(--chip-bg);
+      border: 1.5px solid var(--chip-border);
+      color: var(--nav-link-color);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .settings-btn:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.08);
+      transform: rotate(45deg);
+    }
+
+    /* ── Header waffle apps button ── */
+    .apps-waffle-btn {
+      background: var(--chip-bg);
+      border: 1.5px solid var(--chip-border);
+      color: var(--nav-link-color);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.22s ease;
+      position: relative;
+    }
+
+    .apps-waffle-btn:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.06);
+    }
+
+    .apps-waffle-btn.open {
+      border-color: #2563eb;
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    /* The × icon hidden by default, shown when open */
+    .apps-waffle-btn .icon-grid {
+      transition: all 0.2s;
+    }
+
+    .apps-waffle-btn .icon-close {
+      display: none;
+    }
+
+    .apps-waffle-btn.open .icon-grid {
+      display: none;
+    }
+
+    .apps-waffle-btn.open .icon-close {
+      display: block;
+    }
+
+    /* ── Apps Dropdown Panel (top-right) ── */
+    .apps-panel {
+      position: fixed;
+      top: 68px;
+      right: 1.5rem;
+      z-index: 9990;
+      width: 280px;
+      background: var(--chip-bg);
+      border: 1.5px solid var(--chip-border);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.14);
+      padding: 1rem;
+      transform: scale(0.92) translateY(-12px);
+      transform-origin: top right;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .apps-panel.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: scale(1) translateY(0);
+    }
+
+    .apps-panel-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--chip-border);
+    }
+
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    .app-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.75rem 0.4rem;
+      border-radius: 14px;
+      border: 1.5px solid var(--chip-border);
+      background: var(--input-bg);
+      color: var(--nav-link-color);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .app-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .app-card:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+    }
+
+    .app-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: white;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .app-card:hover .app-icon {
+      transform: scale(1.08);
+    }
+
+    /* ============ Floating Calculator ============ */
+    .calc-fab {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 9999;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #fff;
+      font-size: 1.25rem;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .calc-fab:hover {
+      transform: scale(1.12) rotate(10deg);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.55);
+    }
+
+    .calc-fab.active {
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      box-shadow: 0 8px 25px rgba(220, 38, 38, 0.45);
+      transform: rotate(45deg);
+    }
+
+    .calc-panel {
+      position: fixed;
+      bottom: 6rem;
+      left: 2rem;
+      z-index: 9998;
+      width: 300px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+      padding: 1.25rem;
+      transform: scale(0.85) translateY(20px);
+      transform-origin: bottom left;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ============ Shrishti AI Chatbot ============ */
+    .ai-fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 9999;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .ai-fab:hover {
+      transform: scale(1.12) rotate(-10deg);
+      box-shadow: 0 12px 30px rgba(139, 92, 246, 0.55);
+    }
+
+    .ai-fab.active {
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      box-shadow: 0 8px 25px rgba(220, 38, 38, 0.45);
+      transform: rotate(45deg);
+    }
+
+    .ai-panel {
+      position: fixed;
+      bottom: 6.5rem;
+      right: 2rem;
+      z-index: 9998;
+      width: 340px;
+      height: 480px;
+      background: var(--card-bg, var(--input-bg));
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.85) translateY(20px);
+      transform-origin: bottom right;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+
+    .ai-panel.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: scale(1) translateY(0);
+    }
+
+    .ai-header {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+      color: white;
+      padding: 1rem 1.25rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .shrishti-model-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--chip-bg, var(--bg-color));
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.75rem;
+    }
+
+    .shrishti-model-select {
+      background: var(--input-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+      max-width: 175px;
+    }
+
+    .shrishti-quota-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .ai-body {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    .ai-msg {
+      max-width: 85%;
+      padding: 0.75rem 1rem;
+      border-radius: 16px;
+      line-height: 1.4;
+    }
+
+    .ai-msg.bot {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .ai-msg.user {
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--text-main);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai-input-area {
+      padding: 1rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .ai-input {
+      flex: 1;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--input-text);
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      outline: none;
+    }
+
+    .ai-input:focus {
+      border-color: #8b5cf6;
+    }
+
+    .ai-send-btn {
+      background: #8b5cf6;
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ai-send-btn:hover {
+      background: #7c3aed;
+    }
+
+    .ai-voice-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .ai-voice-btn:hover {
+      background: rgba(139, 92, 246, 0.1);
+      color: #8b5cf6;
+      border-color: #8b5cf6;
+    }
+
+    .ai-voice-btn.listening {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-color: #ef4444;
+      animation: pulse-ai-mic 1.2s infinite;
+    }
+
+    @keyframes pulse-ai-mic {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      70% { transform: scale(1.08); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    .ai-msg-speak-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+      vertical-align: middle;
+    }
+
+    .ai-msg-speak-btn:hover {
+      background: rgba(139, 92, 246, 0.12);
+      color: #8b5cf6;
+      border-color: #8b5cf6;
+    }
+
+    .ai-msg-speak-btn.speaking {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .calc-panel.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: scale(1) translateY(0);
+    }
+
+    .calc-display {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+      text-align: right;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .calc-expr {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      min-height: 1.1rem;
+      word-break: break-all;
+      font-weight: 500;
+    }
+
+    .calc-result {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+      word-break: break-all;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+
+    .calc-btn {
+      height: 54px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: var(--chip-bg);
+      color: var(--text-main);
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-btn:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .calc-btn:active {
+      transform: scale(0.94);
+    }
+
+    .calc-btn.op {
+      background: rgba(37, 99, 235, 0.1);
+      color: #2563eb;
+      border-color: rgba(37, 99, 235, 0.25);
+    }
+
+    .calc-btn.op:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .calc-btn.eq {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #fff;
+      border-color: transparent;
+      grid-column: span 2;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .calc-btn.eq:hover {
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .calc-btn.clear {
+      background: rgba(220, 38, 38, 0.1);
+      color: #dc2626;
+      border-color: rgba(220, 38, 38, 0.25);
+    }
+
+    .calc-btn.clear:hover {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .calc-btn.zero {
+      grid-column: span 2;
+    }
+
+    .calc-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    [data-theme="dark"] .voice-modal {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f8fafc;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .voice-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f8fafc;
+    }
+
+    [data-theme="dark"] .voice-modal-header {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
+    .voice-modal-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+    }
+
+    .voice-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .voice-lang-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .voice-lang-icon {
+      position: absolute;
+      left: 0.55rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .voice-lang-select {
+      appearance: none;
+      -webkit-appearance: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.3rem 1.6rem 0.3rem 1.7rem;
+      background-color: var(--input-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='%2364748b'%3E%3Cpath d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.55rem center;
+      transition: border-color 0.2s;
+    }
+
+    .voice-lang-select:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .voice-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .voice-close-btn:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--text-main);
+    }
+
+    [data-theme="dark"] .voice-close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    .voice-modal-body {
+      padding: 1.75rem 1.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .voice-mic-container {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.1rem;
+    }
+
+    .voice-mic-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: none;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+      transition: transform 0.15s ease, background-color 0.2s ease;
+    }
+
+    .voice-mic-circle:hover {
+      transform: scale(1.04);
+    }
+
+    .voice-mic-circle.error {
+      background: #dc2626;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35);
+    }
+
+    .voice-mic-circle.finished {
+      background: #16a34a;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.35);
+    }
+
+    .voice-pulse-ring {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid rgba(37, 99, 235, 0.5);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .voice-overlay.listening .voice-pulse-ring {
+      animation: voiceSubtlePulse 1.6s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+    }
+
+    @keyframes voiceSubtlePulse {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+      }
+
+      70% {
+        transform: scale(1.35);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1.35);
+        opacity: 0;
+      }
+    }
+
+    .voice-status-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+    }
+
+    .voice-sub-status {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── 2020 Bing Sea Wave & Search Forwarding Animations ── */
+    .voice-sea-wave {
+      width: 100%;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.2rem 0 0.85rem;
+      overflow: hidden;
+    }
+
+    .wave-track {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      height: 100%;
+    }
+
+    .wave-bar {
+      width: 4px;
+      height: 6px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, #38bdf8 0%, #2563eb 100%);
+      transition: height 0.08s ease;
+      opacity: 0.35;
+    }
+
+    .voice-overlay.listening .wave-bar {
+      opacity: 0.95;
+      animation: bingSeaWave 1.4s ease-in-out infinite;
+    }
+
+    .voice-overlay.listening .wave-bar.w-1 {
+      animation-delay: 0.00s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-2 {
+      animation-delay: 0.11s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-3 {
+      animation-delay: 0.22s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-4 {
+      animation-delay: 0.33s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-5 {
+      animation-delay: 0.44s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-6 {
+      animation-delay: 0.55s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-7 {
+      animation-delay: 0.66s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-8 {
+      animation-delay: 0.77s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-9 {
+      animation-delay: 0.88s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-10 {
+      animation-delay: 0.99s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-11 {
+      animation-delay: 1.10s;
+    }
+
+    .voice-overlay.listening .wave-bar.w-12 {
+      animation-delay: 1.21s;
+    }
+
+    @keyframes bingSeaWave {
+
+      0%,
+      100% {
+        height: 6px;
+        background: linear-gradient(180deg, #38bdf8 0%, #2563eb 100%);
+      }
+
+      50% {
+        height: 34px;
+        background: linear-gradient(180deg, #67e8f9 0%, #0284c7 100%);
+      }
+    }
+
+    .search-input-group.search-forwarded,
+    .header-search-group.search-forwarded {
+      animation: searchForwardPulse 0.9s ease-out;
+    }
+
+    @keyframes searchForwardPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+      }
+
+      40% {
+        box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.2);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+      }
+    }
+
+    .voice-transcript-box {
+      width: 100%;
+      min-height: 52px;
+      padding: 0.65rem 0.85rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.98rem;
+      color: var(--text-main);
+      line-height: 1.45;
+      display: flex;
+      align-items: center;
+      word-break: break-word;
+    }
+
+    .voice-transcript-text {
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .voice-transcript-text:empty::before {
+      content: "Waiting for speech...";
+      font-weight: 400;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .voice-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1rem;
+      background-color: #2563eb;
+      margin-left: 3px;
+      animation: voiceCursorBlink 0.8s infinite;
+    }
+
+    @keyframes voiceCursorBlink {
+
+      0%,
+      100% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .voice-error-notice {
+      width: 100%;
+      margin-top: 0.75rem;
+      padding: 0.6rem 0.85rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      color: #991b1b;
+      font-size: 0.82rem;
+      text-align: left;
+      line-height: 1.4;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    [data-theme="dark"] .voice-error-notice {
+      background: rgba(220, 38, 38, 0.15);
+      border-color: rgba(220, 38, 38, 0.35);
+      color: #fca5a5;
+    }
+
+    .voice-modal-footer {
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid #e5e7eb;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.6rem;
+    }
+
+    [data-theme="dark"] .voice-modal-footer {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
+    .voice-btn {
+      padding: 0.45rem 1.1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      font-family: inherit;
+    }
+
+    .voice-btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .voice-btn-secondary:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="dark"] .voice-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .voice-btn-primary {
+      background: #2563eb;
+      border: 1px solid #2563eb;
+      color: #ffffff;
+    }
+
+    .voice-btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    /* ── Mobile Responsive Overhaul (Screens <= 640px) ── */
+    @media (max-width: 640px) {
+      .header-nav {
+        padding: 0.75rem 0.9rem;
+      }
+
+      .header-right {
+        gap: 0.4rem;
+      }
+
+      .theme-toggle-btn {
+        padding: 0.4rem 0.65rem;
+        font-size: 0.8rem;
+      }
+
+      .theme-toggle-btn #themeText {
+        display: none;
+      }
+
+      .nav-link-custom {
+        padding: 0.35rem 0.5rem;
+        font-size: 0.82rem;
+      }
+
+      .about-text-long {
+        display: none;
+      }
+
+      .about-text-short {
+        display: inline;
+      }
+
+      .settings-btn,
+      .apps-waffle-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.92rem;
+      }
+
+      .main-wrapper {
+        padding: 1.25rem 1rem 2rem;
+        max-width: 100%;
+      }
+
+      .logo-container {
+        margin-bottom: 1.25rem;
+      }
+
+      .logo-brand-link {
+        padding: 10px 22px;
+        border-radius: 36px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .logo-img {
+        max-width: 170px;
+        max-height: 95px;
+        border-radius: 20px;
+      }
+
+      .tagline {
+        font-size: 0.82rem;
+        margin-top: 0.5rem;
+      }
+
+      .form-input {
+        height: 52px;
+        font-size: 0.94rem;
+        padding: 0 5.6rem 0 2.75rem;
+        border-radius: 26px;
+      }
+
+      .search-icon-left {
+        left: 1rem;
+        font-size: 1rem;
+      }
+
+      .voice-search-btn {
+        right: 3.1rem;
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
+
+      .search-btn-right {
+        width: 40px;
+        height: 40px;
+        right: 6px;
+        font-size: 0.95rem;
+      }
+
+      /* Stack Floating Action Buttons on Right on mobile to prevent clashing with the bottom-left language widget */
+      .ai-fab {
+        bottom: 1.25rem;
+        right: 1.25rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
+      }
+
+      .calc-fab {
+        bottom: 4.85rem;
+        right: 1.25rem;
+        left: auto;
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+      }
+
+      .ai-panel {
+        bottom: 4.75rem;
+        right: 0.75rem;
+        width: calc(100vw - 1.5rem);
+        max-width: 380px;
+        height: 72vh;
+        max-height: 520px;
+        border-radius: 20px;
+      }
+
+      .calc-panel {
+        bottom: 5.25rem;
+        right: 0.75rem;
+        left: auto;
+        width: calc(100vw - 1.5rem);
+        max-width: 310px;
+        transform-origin: bottom right;
+        border-radius: 20px;
+      }
+
+      .apps-panel {
+        top: 60px;
+        right: 0.75rem;
+        width: calc(100vw - 1.5rem);
+        max-width: 310px;
+        border-radius: 18px;
+      }
+
+      .ip-info-bar {
+        font-size: 0.72rem;
+        padding: 0.55rem 0.75rem;
+        flex-wrap: wrap;
+        line-height: 1.4;
+      }
+
+      .footer-container {
+        padding: 1.25rem 1rem 4.5rem;
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.35rem 0.65rem;
+      }
+    }
+
+    @media (min-width: 641px) {
+      .about-text-short {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header Navigation -->
+  <header class="header-nav">
+    <div class="header-left">
+      <!-- Dark Mode Toggle Button (Pt 2) -->
+      <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+        <span id="themeText" class="ms-1">Dark Mode</span>
+      </button>
+    </div>
+    <div class="header-right">
+      <a href="about.html" class="nav-link-custom"><i class="fa-solid fa-circle-info me-1"></i> <span class="about-text-long">About &amp; Privacy</span><span class="about-text-short">About</span></a>
+      <!-- Settings Button (Gear Icon) -->
+      <a href="settings.html" class="settings-btn" id="settingsBtn" aria-label="Settings" title="Settings">
+        <i class="fa-solid fa-gear"></i>
+      </a>
+      <!-- Waffle/Grid Apps Button -->
+      <button class="apps-waffle-btn" id="appsWaffleBtn" onclick="toggleApps()" aria-label="Apps" title="Apps"
+        aria-expanded="false">
+        <i class="fa-solid fa-border-all icon-grid"></i>
+        <i class="fa-solid fa-xmark icon-close"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Apps Dropdown Panel (top-right, fixed) -->
+  <div class="apps-panel" id="appsPanel" role="dialog" aria-label="Apps">
+    <div class="apps-panel-title"><i class="fa-solid fa-border-all me-1"></i> Hind Apps</div>
+    <div class="apps-grid" id="appsGrid">
+      <a href="apps/webstore/shrishti/index.html" class="app-card">
+        <div class="app-icon"
+          style="background: linear-gradient(135deg,#8b5cf6,#6d28d9); box-shadow: 0 4px 10px rgba(139,92,246,0.35); font-weight: 800; font-size: 0.95rem; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.5px; color: white;">
+          AI</div>
+        Shrishti AI
+      </a>
+      <a href="apps/webstore/maps/index.html" class="app-card">
+        <div class="app-icon"
+          style="background: linear-gradient(135deg,#059669,#047857); box-shadow: 0 4px 10px rgba(5,150,105,0.35);"><i
+            class="fa-solid fa-map-location-dot"></i></div>
+        Cyan Maps
+      </a>
+      <a href="apps/webstore/news/index.html" class="app-card">
+        <div class="app-icon"
+          style="background: linear-gradient(135deg,#0891b2,#0e7490); box-shadow: 0 4px 10px rgba(8,145,178,0.35);"><i
+            class="fa-regular fa-newspaper"></i></div>
+        Cyan News
+      </a>
+      <a href="apps/webstore/weather/index.html" class="app-card">
+        <div class="app-icon"
+          style="background: linear-gradient(135deg,#f59e0b,#d97706); box-shadow: 0 4px 10px rgba(245,158,11,0.35);"><i
+            class="fa-solid fa-cloud-sun"></i></div>
+        Cyan Weather
+      </a>
+      <a href="apps/webstore/translator/index.html" class="app-card">
+        <div class="app-icon"
+          style="background: linear-gradient(135deg,#ec4899,#db2777); box-shadow: 0 4px 10px rgba(236,72,153,0.35);"><i
+            class="fa-solid fa-language"></i></div>
+        Cyan Translate
+      </a>
+      <a href="apps/webstore/calendar/index.html" class="app-card">
+        <div class="app-icon"
+          style="background: linear-gradient(135deg,#ef4444,#dc2626); box-shadow: 0 4px 10px rgba(239,68,68,0.35);"><i
+            class="fa-solid fa-calendar-days"></i></div>
+        Cyan Calendar
+      </a>
+      <a href="settings.html" class="app-card">
+        <div class="app-icon"
+          style="background: linear-gradient(135deg,#475569,#334155); box-shadow: 0 4px 10px rgba(71,85,105,0.35);"><i
+            class="fa-solid fa-gear"></i></div>
+        Settings
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Centered Search Content -->
+  <main class="main-wrapper">
+    <!-- Brand Logo (Bharati Script Symbol) -->
+    <div class="logo-container">
+      <a href="index.html" class="logo-brand-link" title="Hind - Bharati Script Logo">
+        <img src="download.png" alt="Hind logo in Bharati Script" class="logo-img" />
+      </a>
+      <div class="tagline">Bharat's Fast &amp; Secure Search</div>
+    </div>
+
+    <!-- Centered Search Bar Form -->
+    <div class="search-box-wrapper">
+      <form method="get" id="ddgSearch" action="search.html" class="search-form">
+        <input type="hidden" name="sites" value="" />
+        <input type="hidden" name="k7" value="#ffffff" />
+        <input type="hidden" name="k8" value="#222222" />
+        <input type="hidden" name="k9" value="#00278e" />
+        <input type="hidden" name="kx" value="#20692b" />
+        <input type="hidden" name="kj" value="#fafafa" />
+        <input type="hidden" name="kt" value="p" />
+
+        <div class="search-input-group">
+          <i class="fa-solid fa-magnifying-glass search-icon-left"></i>
+          <input type="text" name="q" id="searchInput" class="form-input"
+            placeholder="Vandemataram 🇮🇳 Jai Hind 🇮🇳..." aria-label="Search query" autofocus required />
+
+          <button type="button" class="voice-search-btn" id="voiceMicBtn" title="Search by voice"
+            aria-label="Voice search">
+            <i class="fa-solid fa-microphone" id="voiceMicIcon"></i>
+          </button>
+          <button type="submit" class="search-btn-right" aria-label="Submit Search">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </main>
+
+  <!-- Floating Calculator FAB -->
+  <button class="calc-fab" id="calcFab" aria-label="Open Calculator" title="Quick Calculator">
+    <i class="fa-solid fa-calculator" id="calcFabIcon"></i>
+  </button>
+
+  <!-- Calculator Panel -->
+  <div class="calc-panel" id="calcPanel" role="dialog" aria-label="Quick Calculator">
+    <div class="calc-label"><i class="fa-solid fa-calculator me-1"></i> Quick Calculator</div>
+    <div class="calc-display">
+      <div class="calc-expr" id="calcExpr"></div>
+      <div class="calc-result" id="calcResult">0</div>
+    </div>
+    <div class="calc-grid">
+      <!-- Row 1 -->
+      <button class="calc-btn clear" onclick="calcClear()" title="Clear">C</button>
+      <button class="calc-btn op" onclick="calcSign()" title="Toggle sign">+/−</button>
+      <button class="calc-btn op" onclick="calcPercent()" title="Percent">%</button>
+      <button class="calc-btn op" onclick="calcOp('/')" title="Divide">÷</button>
+      <!-- Row 2 -->
+      <button class="calc-btn" onclick="calcNum('7')">7</button>
+      <button class="calc-btn" onclick="calcNum('8')">8</button>
+      <button class="calc-btn" onclick="calcNum('9')">9</button>
+      <button class="calc-btn op" onclick="calcOp('*')" title="Multiply">×</button>
+      <!-- Row 3 -->
+      <button class="calc-btn" onclick="calcNum('4')">4</button>
+      <button class="calc-btn" onclick="calcNum('5')">5</button>
+      <button class="calc-btn" onclick="calcNum('6')">6</button>
+      <button class="calc-btn op" onclick="calcOp('-')" title="Subtract">−</button>
+      <!-- Row 4 -->
+      <button class="calc-btn" onclick="calcNum('1')">1</button>
+      <button class="calc-btn" onclick="calcNum('2')">2</button>
+      <button class="calc-btn" onclick="calcNum('3')">3</button>
+      <button class="calc-btn op" onclick="calcOp('+')" title="Add">+</button>
+      <!-- Row 5 -->
+      <button class="calc-btn zero" onclick="calcNum('0')">0</button>
+      <button class="calc-btn" onclick="calcDot()">.</button>
+      <button class="calc-btn eq" onclick="calcEquals()">=</button>
+    </div>
+  </div>
+
+  <!-- Shrishti AI Floating Chatbot -->
+  <button class="ai-fab" id="aiFab" aria-label="Open Shrishti AI" title="Shrishti AI Assistant">
+    <i class="fa-solid fa-robot" id="aiFabIcon"></i>
+  </button>
+
+  <div class="ai-panel" id="aiPanel" role="dialog" aria-label="Shrishti AI Chatbot" style="position: fixed;">
+    <!-- Disclaimer Overlay -->
+    <div id="aiDisclaimer"
+      style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--card-bg, var(--input-bg)); z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; border-radius: 24px;">
+      <i class="fa-solid fa-triangle-exclamation text-warning mb-3" style="font-size: 2.5rem;"></i>
+      <p style="font-size: 0.95rem; margin-bottom: 1.5rem; color: var(--text-main);">AI model is in development stage so
+        data it has is of till July 2024. We will update it soon.</p>
+      <button
+        onclick="document.getElementById('aiDisclaimer').style.display='none'; document.getElementById('aiInput').focus();"
+        style="background: #8b5cf6; color: white; border: none; padding: 0.6rem 2rem; border-radius: 20px; font-weight: 600; cursor: pointer;">OK</button>
+    </div>
+
+    <div class="ai-header">
+      <span><i class="fa-solid fa-sparkles"></i> Shrishti AI</span>
+      <span class="shrishti-quota-badge" id="shrishtiHomeQuotaBadge">15/15 daily queries left</span>
+    </div>
+
+    <div class="shrishti-model-bar">
+      <div style="display:flex;align-items:center;gap:0.35rem;">
+        <span style="font-weight:600;color:var(--text-muted);font-size:0.75rem;"><i class="fa-solid fa-microchip me-1"></i></span>
+        <select id="shrishtiModelSelect" class="shrishti-model-select"
+          title="Choose AI Model (with automatic fallback cushion)">
+          <option value="lemon-pineapple-a">Lemon Pineapple a</option>
+          <option value="cyan-hind-b">Cyan Hind b</option>
+        </select>
+      </div>
+      <span class="shrishti-pro-badge" id="shrishtiHomeProBadge" style="display:inline-flex;align-items:center;background:rgba(245,158,11,0.22);color:#f59e0b;border-radius:10px;padding:0.15rem 0.5rem;font-size:0.7rem;font-weight:700;white-space:nowrap;cursor:help;" title="Pro Credits: 10/day (2 credits per image = 5 images/day, 5 credits per doc/image = 2 files/day)">⚡ 10/10 Pro Credits</span>
+    </div>
+
+    <div class="ai-body" id="aiBody">
+      <div class="ai-msg bot">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:0.75rem;font-weight:700;color:#8b5cf6;"><i class="fa-solid fa-robot me-1"></i>Shrishti AI</span>
+          <button type="button" class="ai-msg-speak-btn" onclick="toggleSpeakAiMessage(this)" title="Listen to message"><i class="fa-solid fa-volume-high"></i></button>
+        </div>
+        Namaste! I am Shrishti AI. Powered by <strong>2 cushioned models</strong>.<br><br>
+        <span style="font-size:0.8rem;color:var(--text-muted);">
+          ✨ <strong>New features enabled:</strong><br>
+          • 🎨 <strong>Generate Image:</strong> Click wand or type <code>/image &lt;prompt&gt;</code> (2 credits)<br>
+          • 📎 <strong>Analyse Files:</strong> Upload any Doc, PDF, or Image (5 credits)<br>
+          • ⚡ <strong>10 daily Pro credits</strong> available!
+        </span>
+      </div>
+    </div>
+
+    <!-- Pending Attachment Chip -->
+    <div id="aiPendingAttachment" style="display:none;padding:0.4rem 0.85rem;background:rgba(139,92,246,0.12);border-top:1px solid var(--border-color);font-size:0.75rem;align-items:center;justify-content:space-between;color:var(--text-main);">
+      <span style="display:flex;align-items:center;gap:0.4rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+        <i class="fa-solid fa-paperclip text-primary"></i> <strong id="aiAttachedFileName">document</strong> <span style="color:#8b5cf6;">(5 credits)</span>
+      </span>
+      <button type="button" onclick="clearAiAttachment()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:2px 6px;" title="Remove attachment"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Hidden File Input (PDF, DOCX, Transcripts) -->
+    <input type="file" id="aiFileInput" accept=".pdf,.docx,.doc,.txt,.vtt,.srt" style="display:none;" onchange="handleAiFileSelect(event)" />
+
+    <div class="ai-input-area" style="align-items:center;gap:0.4rem;">
+      <button type="button" id="aiAttachBtn" onclick="document.getElementById('aiFileInput').click()" title="Analyse PDF, DOCX or Transcript (costs 5 Pro Credits)" style="background:transparent;border:1px solid var(--border-color);color:var(--text-muted);width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;">
+        <i class="fa-solid fa-paperclip"></i>
+      </button>
+      <button type="button" id="aiImageBtn" onclick="toggleImageGenPrompt()" title="Generate AI Image (costs 2 Pro Credits)" style="background:transparent;border:1px solid var(--border-color);color:#f59e0b;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      </button>
+      <input type="text" id="aiInput" class="ai-input" placeholder="Ask Shrishti or type /image..."
+        onkeypress="if(event.key === 'Enter') sendAiMessage()" />
+      <button type="button" id="aiVoiceBtn" class="ai-voice-btn" title="Voice Input (speak to Shrishti)" aria-label="Voice Input">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
+      <button class="ai-send-btn" onclick="sendAiMessage()" style="flex-shrink:0;" aria-label="Send">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+    <div
+      style="text-align: center; font-size: 0.72rem; color: var(--text-muted); padding-bottom: 0.6rem; background: var(--card-bg, var(--input-bg));">
+      AI can make mistakes • 2 credits/image • 5 credits/Doc &amp; Transcript summary
+    </div>
+  </div>
+
+  <!-- Visitor IP Address Bar -->
+  <div class="ip-info-bar" id="ipInfoBar">
+    <span class="ip-dot" id="ipDot"></span>
+    <span id="ipText">Fetching your connection info...</span>
+  </div>
+
+  <!-- Clean Footer -->
+  <footer class="footer-container">
+    <div class="footer-brand">© 2026 Lemon India DAO</div>
+    <p class="footer-links">
+      <a href="about.html" rel="noopener">About &amp; Privacy Policy</a>
+      <span class="v-divider">•</span>
+      <a href="LICENSE" target="_blank" rel="noopener">Open Source
+        License</a>
+      <span class="v-divider">•</span>
+      <span>Copyright 2026 all rights reserved</span>
+    </p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="shrishti-engine.js"></script>
+  <script>
+    // Dark Mode Toggle Logic
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('hind_theme', theme);
+      if (theme === 'dark') {
+        themeIcon.className = 'fa-solid fa-sun';
+        themeIcon.style.color = '#f59e0b';
+        if (themeText) themeText.textContent = 'Light Mode';
+      } else {
+        themeIcon.className = 'fa-solid fa-moon';
+        themeIcon.style.color = '';
+        if (themeText) themeText.textContent = 'Dark Mode';
+      }
+    }
+
+    const savedTheme = localStorage.getItem('hind_theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // Personalize Settings Button if user saved profile
+    try {
+      const p = JSON.parse(localStorage.getItem('hind_user_profile'));
+      if (p && p.name) {
+        const sb = document.getElementById('settingsBtn');
+        if (sb) sb.title = `Settings (${p.name})`;
+      }
+    } catch (_) {}
+
+    // ============ Floating Calculator Logic ============
+    const calcFab = document.getElementById('calcFab');
+    const calcPanel = document.getElementById('calcPanel');
+    const calcFabIcon = document.getElementById('calcFabIcon');
+
+    let calcCurrent = '0';
+    let calcPrev = '';
+    let calcOperator = null;
+    let calcShouldReset = false;
+
+    function calcUpdateDisplay() {
+      document.getElementById('calcResult').textContent = calcCurrent;
+    }
+
+    function calcUpdateExpr(expr) {
+      document.getElementById('calcExpr').textContent = expr || '';
+    }
+
+    function calcNum(digit) {
+      if (calcShouldReset) {
+        calcCurrent = digit;
+        calcShouldReset = false;
+      } else {
+        calcCurrent = calcCurrent === '0' ? digit : calcCurrent + digit;
+      }
+      if (calcCurrent.length > 12) calcCurrent = calcCurrent.slice(0, 12);
+      calcUpdateDisplay();
+    }
+
+    function calcDot() {
+      if (calcShouldReset) { calcCurrent = '0.'; calcShouldReset = false; }
+      else if (!calcCurrent.includes('.')) calcCurrent += '.';
+      calcUpdateDisplay();
+    }
+
+    function calcOp(op) {
+      const opLabel = { '+': '+', '-': '−', '*': '×', '/': '÷' };
+      if (calcOperator && !calcShouldReset) {
+        calcEquals(true);
+      }
+      calcPrev = calcCurrent;
+      calcOperator = op;
+      calcShouldReset = true;
+      calcUpdateExpr(`${calcPrev} ${opLabel[op]}`);
+    }
+
+    function calcEquals(silent = false) {
+      if (!calcOperator || calcShouldReset) return;
+      const a = parseFloat(calcPrev);
+      const b = parseFloat(calcCurrent);
+      const opLabel = { '+': '+', '-': '−', '*': '×', '/': '÷' };
+      let result;
+      switch (calcOperator) {
+        case '+': result = a + b; break;
+        case '-': result = a - b; break;
+        case '*': result = a * b; break;
+        case '/': result = b !== 0 ? a / b : 'Error'; break;
+      }
+      if (!silent) {
+        calcUpdateExpr(`${calcPrev} ${opLabel[calcOperator]} ${b} =`);
+      }
+      const resultStr = typeof result === 'number'
+        ? parseFloat(result.toFixed(10)).toString()
+        : result;
+      calcCurrent = resultStr;
+      calcOperator = null;
+      calcShouldReset = true;
+      calcUpdateDisplay();
+    }
+
+    function calcClear() {
+      calcCurrent = '0';
+      calcPrev = '';
+      calcOperator = null;
+      calcShouldReset = false;
+      calcUpdateDisplay();
+      calcUpdateExpr('');
+    }
+
+    function calcSign() {
+      calcCurrent = calcCurrent.startsWith('-')
+        ? calcCurrent.slice(1)
+        : (calcCurrent !== '0' ? '-' + calcCurrent : '0');
+      calcUpdateDisplay();
+    }
+
+    function calcPercent() {
+      calcCurrent = (parseFloat(calcCurrent) / 100).toString();
+      calcUpdateDisplay();
+    }
+
+    // FAB toggle
+    calcFab.addEventListener('click', () => {
+      const isOpen = calcPanel.classList.contains('open');
+      calcPanel.classList.toggle('open');
+      calcFab.classList.toggle('active');
+      calcFabIcon.className = isOpen ? 'fa-solid fa-calculator' : 'fa-solid fa-xmark';
+    });
+
+    // Shrishti AI Logic
+    const aiFab = document.getElementById('aiFab');
+    const aiPanel = document.getElementById('aiPanel');
+    const aiFabIcon = document.getElementById('aiFabIcon');
+    const aiBody = document.getElementById('aiBody');
+    const aiInput = document.getElementById('aiInput');
+
+    aiFab.addEventListener('click', () => {
+      const isOpen = aiPanel.classList.contains('open');
+      aiPanel.classList.toggle('open');
+      aiFab.classList.toggle('active');
+      aiFabIcon.className = isOpen ? 'fa-solid fa-robot' : 'fa-solid fa-xmark';
+      if (!isOpen) {
+        aiInput.focus();
+      }
+    });
+
+    // Close panels when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!calcFab.contains(e.target) && !calcPanel.contains(e.target)) {
+        calcPanel.classList.remove('open');
+        calcFab.classList.remove('active');
+        calcFabIcon.className = 'fa-solid fa-calculator';
+      }
+      if (!aiFab.contains(e.target) && !aiPanel.contains(e.target)) {
+        aiPanel.classList.remove('open');
+        aiFab.classList.remove('active');
+        aiFabIcon.className = 'fa-solid fa-robot';
+      }
+    });
+
+    // Utility: HTML Escaping
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+    window.escapeHtml = escapeHtml;
+
+    let _aiSelectedFile = null;
+
+    function handleAiFileSelect(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      _aiSelectedFile = file;
+      const bar = document.getElementById('aiPendingAttachment');
+      const nameEl = document.getElementById('aiAttachedFileName');
+      if (bar && nameEl) {
+        nameEl.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+        bar.style.display = 'flex';
+      }
+      const inputEl = document.getElementById('aiInput');
+      if (inputEl) {
+        inputEl.placeholder = 'Ask questions, or press Enter for full summary...';
+        inputEl.focus();
+      }
+    }
+
+    function clearAiAttachment() {
+      _aiSelectedFile = null;
+      const fileInput = document.getElementById('aiFileInput');
+      if (fileInput) fileInput.value = '';
+      const bar = document.getElementById('aiPendingAttachment');
+      if (bar) bar.style.display = 'none';
+      const inputEl = document.getElementById('aiInput');
+      if (inputEl) inputEl.placeholder = 'Ask Shrishti, or type /image...';
+    }
+
+    function toggleImageGenPrompt() {
+      const inputEl = document.getElementById('aiInput');
+      if (!inputEl) return;
+      if (inputEl.value.startsWith('/image ')) {
+        inputEl.value = '';
+        inputEl.placeholder = 'Ask Shrishti, or type /image...';
+      } else {
+        inputEl.value = '/image ';
+        inputEl.focus();
+      }
+    }
+
+    async function sendAiMessage() {
+      const inputEl = document.getElementById('aiInput');
+      const bodyEl = document.getElementById('aiBody');
+      if (!inputEl || !bodyEl) return;
+      const text = inputEl.value.trim();
+      const hasFile = !!_aiSelectedFile;
+
+      if (!text && !hasFile) return;
+
+      const isImageRequest = !hasFile && (
+        text.startsWith('/image ') ||
+        text.toLowerCase().startsWith('generate image ') ||
+        text.toLowerCase().startsWith('draw an image ') ||
+        text.toLowerCase().startsWith('draw ')
+      );
+
+      const modelSelectEl = document.getElementById('shrishtiModelSelect');
+      const chosenModel = (modelSelectEl && modelSelectEl.value) || 'lemon-pineapple-a';
+
+      // ── 1. FILE ANALYSIS FLOW (costs 5 Pro Credits) ──
+      if (hasFile) {
+        const fileToAnalyze = _aiSelectedFile;
+        clearAiAttachment();
+
+        // Check Pro Credits (5 credits)
+        if (typeof canSpendProCredits === 'function' && !canSpendProCredits(5)) {
+          const rem = typeof getShrishtiRemainingProCredits === 'function' ? getShrishtiRemainingProCredits() : 0;
+          const errDiv = document.createElement('div');
+          errDiv.className = 'ai-msg bot';
+          errDiv.innerHTML = `<i class="fa-solid fa-circle-exclamation text-warning me-1"></i><strong>Not enough Pro Credits:</strong> File analysis requires <strong>5 credits</strong> (you have ${rem}/10 left today). Credits reset daily at midnight!`;
+          bodyEl.appendChild(errDiv);
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+          return;
+        }
+
+        // User bubble
+        const userDiv = document.createElement('div');
+        userDiv.className = 'ai-msg user';
+        userDiv.innerHTML = `<div style="display:inline-flex;align-items:center;gap:0.35rem;margin-bottom:4px;padding:3px 8px;background:rgba(255,255,255,0.2);border-radius:8px;font-size:0.75rem;"><i class="fa-solid fa-paperclip"></i> ${escapeHtml(fileToAnalyze.name)}</div><br>${escapeHtml(text || 'Please analyze and summarize this file.')}`;
+        bodyEl.appendChild(userDiv);
+
+        inputEl.value = '';
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+
+        // Loading bubble
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'ai-msg bot';
+        loadingDiv.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-primary"></i> Reading & analyzing document (5 credits)...';
+        bodyEl.appendChild(loadingDiv);
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+
+        try {
+          const result = await analyzeShrishtiFile(fileToAnalyze, text, chosenModel, (status) => {
+            loadingDiv.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-primary"></i> ${escapeHtml(status)}`;
+          });
+          loadingDiv.remove();
+
+          const botDiv = document.createElement('div');
+          botDiv.className = 'ai-msg bot';
+          let previewHtml = '';
+          if (result.fileType === 'image' && result.dataUrl) {
+            previewHtml = `<div style="margin-bottom:8px;"><img src="${result.dataUrl}" style="max-width:100%;max-height:160px;border-radius:8px;border:1px solid var(--border-color);display:block;" alt="Analyzed image" /></div>`;
+          }
+          const badgeHtml = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:0.5rem;"><span style="font-size:0.68rem;padding:2px 8px;border-radius:10px;background:rgba(139,92,246,0.15);color:#8b5cf6;font-weight:700;"><i class="fa-solid fa-file-lines me-1"></i>${escapeHtml(result.fileName)} (${result.fileExt.toUpperCase()})</span><div style="display:flex;align-items:center;gap:0.4rem;"><span style="font-size:0.68rem;padding:2px 7px;border-radius:8px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;">-5 Credits (⚡ ${result.creditsRemaining}/10 left)</span><button type="button" class="ai-msg-speak-btn" onclick="toggleSpeakAiMessage(this)" title="Listen to summary"><i class="fa-solid fa-volume-high"></i></button></div></div>`;
+          botDiv.innerHTML = previewHtml + badgeHtml + escapeHtml(result.content).replace(/\n/g, '<br>');
+          bodyEl.appendChild(botDiv);
+        } catch (err) {
+          loadingDiv.remove();
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'ai-msg bot';
+          errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-danger me-1"></i> ' + escapeHtml(err.message || 'Failed to analyze file.');
+          bodyEl.appendChild(errorDiv);
+        }
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+        return;
+      }
+
+      // ── 2. IMAGE GENERATION FLOW (costs 2 Pro Credits) ──
+      if (isImageRequest) {
+        let promptText = text;
+        if (text.startsWith('/image ')) promptText = text.slice(7).trim();
+        else if (text.toLowerCase().startsWith('generate image of ')) promptText = text.slice(18).trim();
+        else if (text.toLowerCase().startsWith('generate image ')) promptText = text.slice(15).trim();
+        else if (text.toLowerCase().startsWith('draw an image of ')) promptText = text.slice(18).trim();
+        else if (text.toLowerCase().startsWith('draw ')) promptText = text.slice(5).trim();
+
+        if (!promptText) {
+          promptText = 'A futuristic cyber city in Bharat, vibrant lighting, highly detailed 8k';
+        }
+
+        // Check Pro Credits (2 credits)
+        if (typeof canSpendProCredits === 'function' && !canSpendProCredits(2)) {
+          const rem = typeof getShrishtiRemainingProCredits === 'function' ? getShrishtiRemainingProCredits() : 0;
+          const errDiv = document.createElement('div');
+          errDiv.className = 'ai-msg bot';
+          errDiv.innerHTML = `<i class="fa-solid fa-circle-exclamation text-warning me-1"></i><strong>Not enough Pro Credits:</strong> Image generation requires <strong>2 credits</strong> (you have ${rem}/10 left today). Credits reset daily at midnight!`;
+          bodyEl.appendChild(errDiv);
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+          return;
+        }
+
+        // User bubble
+        const userDiv = document.createElement('div');
+        userDiv.className = 'ai-msg user';
+        userDiv.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles me-1 text-warning"></i> Generate Image: <em>"${escapeHtml(promptText)}"</em>`;
+        bodyEl.appendChild(userDiv);
+
+        inputEl.value = '';
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+
+        // Loading bubble
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'ai-msg bot';
+        loadingDiv.innerHTML = '<i class="fa-solid fa-palette fa-spin text-warning"></i> Painting and generating your image (2 credits)...';
+        bodyEl.appendChild(loadingDiv);
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+
+        try {
+          const imgResult = await generateShrishtiImage(promptText);
+          loadingDiv.remove();
+
+          const botDiv = document.createElement('div');
+          botDiv.className = 'ai-msg bot';
+          botDiv.style.maxWidth = '92%';
+          botDiv.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:0.5rem;">
+              <span style="font-size:0.68rem;padding:2px 8px;border-radius:10px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;"><i class="fa-solid fa-palette me-1"></i>AI Generated Image</span>
+              <span style="font-size:0.68rem;padding:2px 7px;border-radius:8px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;">-2 Credits (⚡ ${imgResult.creditsRemaining}/10 left)</span>
+            </div>
+            <div style="position:relative;margin:6px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border-color);background:#000;">
+              <img src="${imgResult.imageUrl}" style="width:100%;height:auto;display:block;border-radius:12px;min-height:180px;object-fit:cover;" alt="${escapeHtml(imgResult.prompt)}" loading="lazy" />
+            </div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;"><em>"${escapeHtml(imgResult.prompt)}"</em></div>
+            <div style="display:flex;gap:0.5rem;">
+              <a href="${imgResult.imageUrl}" target="_blank" download="shrishti-ai-art.jpg" style="display:inline-flex;align-items:center;gap:0.35rem;padding:0.3rem 0.75rem;border-radius:6px;background:#8b5cf6;color:#fff;text-decoration:none;font-size:0.75rem;font-weight:700;">
+                <i class="fa-solid fa-download"></i> Download Image
+              </a>
+              <a href="${imgResult.imageUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:0.35rem;padding:0.3rem 0.75rem;border-radius:6px;background:var(--input-bg);color:var(--text-main);border:1px solid var(--border-color);text-decoration:none;font-size:0.75rem;font-weight:600;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Res
+              </a>
+            </div>
+          `;
+          bodyEl.appendChild(botDiv);
+        } catch (err) {
+          loadingDiv.remove();
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'ai-msg bot';
+          errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-danger me-1"></i> ' + escapeHtml(err.message || 'Failed to generate image.');
+          bodyEl.appendChild(errorDiv);
+        }
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+        return;
+      }
+
+      // ── 3. STANDARD QUERY FLOW (15 daily questions) ──
+      if (typeof canAskShrishti === 'function' && !canAskShrishti()) {
+        const errDiv = document.createElement('div');
+        errDiv.className = 'ai-msg bot';
+        errDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation text-danger me-1"></i><strong>Daily limit reached:</strong> You have used all 15 questions for today. Please come back tomorrow!';
+        bodyEl.appendChild(errDiv);
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+        return;
+      }
+
+      // Add user message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'ai-msg user';
+      userDiv.textContent = text;
+      bodyEl.appendChild(userDiv);
+
+      inputEl.value = '';
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+
+      // Add loading state
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'ai-msg bot';
+      loadingDiv.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Thinking...';
+      bodyEl.appendChild(loadingDiv);
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+
+      try {
+        const result = await requestShrishtiAiWithCushion(text, chosenModel, (fallbackModel) => {
+          loadingDiv.innerHTML = `<i class="fa-solid fa-shield-halved fa-spin text-warning me-1"></i> Cushioning failover to <em>${escapeHtml(fallbackModel)}</em>...`;
+        });
+        loadingDiv.remove();
+
+        // Increment quota count
+        if (typeof incrementShrishtiQuota === 'function') {
+          incrementShrishtiQuota();
+        }
+
+        const botDiv = document.createElement('div');
+        botDiv.className = 'ai-msg bot';
+        let badgeHtml = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:0.5rem;"><span style="font-size:0.68rem;padding:2px 8px;border-radius:10px;background:rgba(139,92,246,0.15);color:#8b5cf6;font-weight:700;"><i class="fa-solid fa-microchip me-1"></i>${escapeHtml(result.modelUsed)}${result.cushioned ? ' (cushioned)' : ''}</span><button type="button" class="ai-msg-speak-btn" onclick="toggleSpeakAiMessage(this)" title="Listen to answer"><i class="fa-solid fa-volume-high"></i></button></div>`;
+        botDiv.innerHTML = badgeHtml + escapeHtml(result.content).replace(/\n/g, '<br>');
+        bodyEl.appendChild(botDiv);
+      } catch (err) {
+        loadingDiv.remove();
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'ai-msg bot';
+        errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-danger me-1"></i> ' + escapeHtml(err.message || 'Failed to reach Shrishti AI.');
+        bodyEl.appendChild(errorDiv);
+      }
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+    }
+    window.sendAiMessage = sendAiMessage;
+    window.handleAiFileSelect = handleAiFileSelect;
+    window.clearAiAttachment = clearAiAttachment;
+    window.toggleImageGenPrompt = toggleImageGenPrompt;
+    window.sendAiMessage = sendAiMessage;
+
+    // ─── Apps Panel Toggle (top-right waffle) ──────────────────
+    function toggleApps() {
+      const btn = document.getElementById('appsWaffleBtn');
+      const panel = document.getElementById('appsPanel');
+      const cards = document.querySelectorAll('.app-card');
+      const isOpen = panel.classList.contains('open');
+
+      btn.classList.toggle('open');
+      btn.setAttribute('aria-expanded', !isOpen);
+      panel.classList.toggle('open');
+
+      if (!isOpen) {
+        cards.forEach((card, i) => {
+          card.style.transition = `opacity 0.25s ease ${i * 55}ms, transform 0.25s ease ${i * 55}ms`;
+          setTimeout(() => card.classList.add('visible'), 20 + i * 55);
+        });
+      } else {
+        cards.forEach(card => {
+          card.classList.remove('visible');
+          card.style.transition = '';
+        });
+      }
+    }
+
+    // Close apps panel when clicking outside
+    document.addEventListener('click', (e) => {
+      const btn = document.getElementById('appsWaffleBtn');
+      const panel = document.getElementById('appsPanel');
+      if (btn && panel && !btn.contains(e.target) && !panel.contains(e.target)) {
+        if (panel.classList.contains('open')) {
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          panel.classList.remove('open');
+          document.querySelectorAll('.app-card').forEach(c => {
+            c.classList.remove('visible');
+            c.style.transition = '';
+          });
+        }
+      }
+    });
+
+    // ─── Visitor IP Address Bar ───────────────────────────────────────
+    (async function loadIPInfo() {
+      const ipText = document.getElementById('ipText');
+      const ipDot = document.getElementById('ipDot');
+      if (!ipText) return;
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        const ip = data.ip || '—';
+        const city = data.city || '';
+        const region = data.region || '';
+        const country = data.country_name || '';
+        const isp = data.org || '';
+        let location = [city, region, country].filter(Boolean).join(', ');
+        ipText.innerHTML =
+          `Your IP: <strong>${ip}</strong>${location ? ' &nbsp;·&nbsp; ' + location : ''}${isp ? ' &nbsp;·&nbsp; ' + isp : ''}`;
+        if (ipDot) ipDot.title = `IP: ${ip}`;
+      } catch (e) {
+        if (ipText) ipText.textContent = 'Could not detect connection info.';
+        if (ipDot) ipDot.style.background = '#ef4444';
+      }
+    })();
+    // ── Voice Search ──
+    (function () {
+      const micBtn = document.getElementById('voiceMicBtn');
+      const micIcon = document.getElementById('voiceMicIcon');
+      const searchInp = document.getElementById('searchInput');
+      if (!micBtn) return;
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        micBtn.style.display = 'none';
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'hi-IN'; // Hindi-India, falls back to English
+      recognition.continuous = false;
+      recognition.interimResults = true;
+
+      let listening = false;
+
+      micBtn.addEventListener('click', () => {
+        if (listening) {
+          recognition.stop();
+          return;
+        }
+        recognition.start();
+      });
+
+      recognition.onstart = () => {
+        listening = true;
+        micBtn.classList.add('listening');
+        micIcon.className = 'fa-solid fa-microphone-lines';
+        micBtn.title = 'Listening... click to stop';
+      };
+
+      recognition.onresult = (event) => {
+        let interim = '';
+        let final = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          if (event.results[i].isFinal) {
+            final += event.results[i][0].transcript;
+          } else {
+            interim += event.results[i][0].transcript;
+          }
+        }
+        // Show interim in input live
+        if (interim) searchInp.value = interim;
+        if (final) {
+          searchInp.value = final;
+          // Redirect to our search page
+          window.location.href = 'search.html?q=' + encodeURIComponent(final.trim());
+        }
+      };
+
+      recognition.onerror = () => {
+        listening = false;
+        micBtn.classList.remove('listening');
+        micIcon.className = 'fa-solid fa-microphone';
+        micBtn.title = 'Search by voice';
+      };
+
+      recognition.onend = () => {
+        listening = false;
+        micBtn.classList.remove('listening');
+        micIcon.className = 'fa-solid fa-microphone';
+        micBtn.title = 'Search by voice';
+      };
+    })();
+
+    // ── Shrishti AI Voice Input ──
+    if (typeof initShrishtiVoiceInput === 'function') {
+      initShrishtiVoiceInput(document.getElementById('aiVoiceBtn'), document.getElementById('aiInput'));
+    }
+  </script>
+  <script>
+    // ── Live Recent Searches & Autocomplete Dropdown ──
+    (function initSearchSuggestions() {
+      const HIST_KEY = 'hind_search_history';
+
+      function getHistory() {
+        try {
+          const raw = JSON.parse(localStorage.getItem(HIST_KEY)) || [];
+          return raw.map(function (item) { return (typeof item === 'object' && item.q) ? item.q : String(item); }).filter(Boolean);
+        } catch (_) {
+          return [];
+        }
+      }
+
+      function saveHistory(query) {
+        const q = (query || '').trim();
+        if (!q) return;
+        var raw = [];
+        try { raw = JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch (_) { }
+        raw = raw.map(function (item) { return (typeof item === 'object' && item.q) ? item : { q: String(item), t: Date.now() }; });
+        raw = raw.filter(function (item) { return item.q.toLowerCase() !== q.toLowerCase(); });
+        raw.unshift({ q: q, t: Date.now() });
+        if (raw.length > 50) raw = raw.slice(0, 50);
+        localStorage.setItem(HIST_KEY, JSON.stringify(raw));
+      }
+
+      function deleteHistoryItem(query) {
+        var raw = [];
+        try { raw = JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch (_) { }
+        raw = raw.filter(function (item) {
+          var itemQ = (typeof item === 'object' && item.q) ? item.q : String(item);
+          return itemQ.toLowerCase() !== query.toLowerCase();
+        });
+        localStorage.setItem(HIST_KEY, JSON.stringify(raw));
+      }
+
+      function clearAllHistory() {
+        localStorage.removeItem(HIST_KEY);
+      }
+
+      // Live autocomplete fetcher (Google Suggest with Wikipedia fallback)
+      let activeJsonpScript = null;
+      let debounceTimer = null;
+
+      function fetchLiveCompletions(query, callback) {
+        const q = (query || '').trim();
+        if (!q) {
+          callback([]);
+          return;
+        }
+
+        const cbName = '__hind_suggest_' + Math.floor(Math.random() * 1000000);
+        let done = false;
+
+        if (activeJsonpScript && activeJsonpScript.parentNode) {
+          activeJsonpScript.parentNode.removeChild(activeJsonpScript);
+          activeJsonpScript = null;
+        }
+
+        const timeout = setTimeout(function () {
+          if (done) return;
+          done = true;
+          cleanup();
+          fetch('https://en.wikipedia.org/w/api.php?action=opensearch&search=' + encodeURIComponent(q) + '&limit=8&namespace=0&format=json&origin=*')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (Array.isArray(data) && Array.isArray(data[1])) {
+                callback(data[1]);
+              } else {
+                callback([]);
+              }
+            })
+            .catch(function () { callback([]); });
+        }, 800);
+
+        function cleanup() {
+          clearTimeout(timeout);
+          try { delete window[cbName]; } catch (_) { }
+          if (activeJsonpScript && activeJsonpScript.parentNode) {
+            activeJsonpScript.parentNode.removeChild(activeJsonpScript);
+            activeJsonpScript = null;
+          }
+        }
+
+        window[cbName] = function (data) {
+          if (done) return;
+          done = true;
+          cleanup();
+          if (Array.isArray(data) && Array.isArray(data[1])) {
+            callback(data[1]);
+          } else {
+            callback([]);
+          }
+        };
+
+        const script = document.createElement('script');
+        script.src = 'https://suggestqueries.google.com/complete/search?client=chrome&q=' + encodeURIComponent(q) + '&callback=' + cbName;
+        script.onerror = function () {
+          if (done) return;
+          done = true;
+          cleanup();
+          fetch('https://en.wikipedia.org/w/api.php?action=opensearch&search=' + encodeURIComponent(q) + '&limit=8&namespace=0&format=json&origin=*')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (Array.isArray(data) && Array.isArray(data[1])) {
+                callback(data[1]);
+              } else {
+                callback([]);
+              }
+            })
+            .catch(function () { callback([]); });
+        };
+        activeJsonpScript = script;
+        document.head.appendChild(script);
+      }
+
+      function setupSuggestionsForInput(inputEl, formEl) {
+        if (!inputEl) return;
+
+        let wrapper = inputEl.closest('.search-input-group') || inputEl.closest('.search-box-wrapper') || inputEl.parentElement;
+        if (!wrapper) return;
+        wrapper.style.position = 'relative';
+
+        let dropdown = wrapper.querySelector('.suggest-dropdown');
+        if (!dropdown) {
+          dropdown = document.createElement('div');
+          dropdown.className = 'suggest-dropdown';
+          wrapper.appendChild(dropdown);
+        }
+
+        let activeIndex = -1;
+        let currentItems = [];
+
+        function renderList(historyMatches, liveSuggestions, query) {
+          const q = (query || '').trim().toLowerCase();
+
+          const items = [];
+          const seen = new Set();
+
+          historyMatches.forEach(function (text) {
+            const lower = text.toLowerCase();
+            if (!seen.has(lower)) {
+              seen.add(lower);
+              items.push({ text: text, isHistory: true });
+            }
+          });
+
+          liveSuggestions.forEach(function (text) {
+            const lower = text.toLowerCase();
+            if (!seen.has(lower)) {
+              seen.add(lower);
+              items.push({ text: text, isHistory: false });
+            }
+          });
+
+          currentItems = items.slice(0, 10);
+
+          if (currentItems.length === 0) {
+            dropdown.classList.remove('open');
+            dropdown.innerHTML = '';
+            activeIndex = -1;
+            return;
+          }
+
+          let hasHistory = currentItems.some(function (it) { return it.isHistory; });
+
+          let html = '';
+          if (hasHistory && !q) {
+            html += `
+              <div class="suggest-header">
+                <span><i class="fa-regular fa-clock me-1"></i> Recent Searches</span>
+                <button type="button" class="suggest-clear-all" title="Clear all recent searches">
+                  <i class="fa-solid fa-trash-can me-1"></i> Clear All
+                </button>
+              </div>
+            `;
+          } else if (hasHistory && q) {
+            html += `
+              <div class="suggest-header">
+                <span><i class="fa-solid fa-clock-rotate-left me-1"></i> Recent &amp; Suggestions</span>
+                <button type="button" class="suggest-clear-all" title="Clear all recent searches">
+                  <i class="fa-solid fa-trash-can me-1"></i> Clear History
+                </button>
+              </div>
+            `;
+          }
+
+          html += '<ul class="suggest-list">';
+
+          currentItems.forEach(function (item, idx) {
+            let displayHtml = escapeHtml(item.text);
+            if (q) {
+              const reg = new RegExp('(' + escapeRegExp(q) + ')', 'gi');
+              displayHtml = escapeHtml(item.text).replace(reg, '<span class="suggest-match-hl">$1</span>');
+            }
+
+            const iconClass = item.isHistory ? 'fa-regular fa-clock' : 'fa-solid fa-magnifying-glass';
+            const deleteBtn = item.isHistory ? `
+              <button type="button" class="suggest-delete-btn" title="Remove from history" data-query="${escapeHtml(item.text)}">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            ` : `
+              <i class="fa-solid fa-arrow-turn-up suggest-arrow-icon" style="opacity:0.35; font-size:0.75rem; transform: rotate(90deg); margin-right: 4px;"></i>
+            `;
+
+            html += `
+              <li class="suggest-item ${idx === activeIndex ? 'active' : ''}" data-query="${escapeHtml(item.text)}" data-idx="${idx}">
+                <div class="suggest-item-left">
+                  <i class="${iconClass} suggest-item-icon"></i>
+                  <span>${displayHtml}</span>
+                </div>
+                ${deleteBtn}
+              </li>
+            `;
+          });
+
+          html += '</ul>';
+          dropdown.innerHTML = html;
+          dropdown.classList.add('open');
+
+          const clearBtn = dropdown.querySelector('.suggest-clear-all');
+          if (clearBtn) {
+            clearBtn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              const liElements = dropdown.querySelectorAll('.suggest-item');
+              liElements.forEach(function (el) { el.classList.add('removing'); });
+              setTimeout(function () {
+                clearAllHistory();
+                updateSuggestions();
+              }, 200);
+            });
+          }
+
+          dropdown.querySelectorAll('.suggest-delete-btn').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              const queryToDelete = btn.dataset.query;
+              const li = btn.closest('.suggest-item');
+              if (li) {
+                li.classList.add('removing');
+                setTimeout(function () {
+                  deleteHistoryItem(queryToDelete);
+                  updateSuggestions();
+                }, 200);
+              }
+            });
+          });
+
+          dropdown.querySelectorAll('.suggest-item').forEach(function (itemEl) {
+            itemEl.addEventListener('click', function (e) {
+              if (e.target.closest('.suggest-delete-btn')) return;
+              const selectedQuery = itemEl.dataset.query;
+              inputEl.value = selectedQuery;
+              saveHistory(selectedQuery);
+              dropdown.classList.remove('open');
+              if (formEl) {
+                formEl.submit();
+              } else {
+                window.location.href = 'search.html?q=' + encodeURIComponent(selectedQuery);
+              }
+            });
+          });
+        }
+
+        function updateSuggestions() {
+          const rawQ = inputEl.value;
+          const q = rawQ.trim().toLowerCase();
+          const history = getHistory();
+          const historyMatches = history.filter(function (item) {
+            return !q || item.toLowerCase().includes(q);
+          });
+
+          if (!q) {
+            renderList(historyMatches, [], '');
+            return;
+          }
+
+          renderList(historyMatches, [], rawQ);
+
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(function () {
+            fetchLiveCompletions(rawQ, function (liveSuggestions) {
+              if (inputEl.value.trim().toLowerCase() === q) {
+                renderList(historyMatches, liveSuggestions, rawQ);
+              }
+            });
+          }, 120);
+        }
+
+        inputEl.addEventListener('focus', updateSuggestions);
+        inputEl.addEventListener('input', updateSuggestions);
+
+        inputEl.addEventListener('keydown', function (e) {
+          const items = dropdown.querySelectorAll('.suggest-item');
+          if (!dropdown.classList.contains('open') || !items.length) return;
+
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIndex = (activeIndex + 1) % items.length;
+            updateActiveItemClass();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIndex = (activeIndex - 1 + items.length) % items.length;
+            updateActiveItemClass();
+          } else if (e.key === 'Enter' && activeIndex >= 0) {
+            e.preventDefault();
+            const selected = items[activeIndex];
+            if (selected) {
+              const selectedQuery = selected.dataset.query;
+              inputEl.value = selectedQuery;
+              saveHistory(selectedQuery);
+              dropdown.classList.remove('open');
+              if (formEl) {
+                formEl.submit();
+              } else {
+                window.location.href = 'search.html?q=' + encodeURIComponent(selectedQuery);
+              }
+            }
+          } else if (e.key === 'Escape') {
+            dropdown.classList.remove('open');
+          }
+        });
+
+        function updateActiveItemClass() {
+          const items = dropdown.querySelectorAll('.suggest-item');
+          items.forEach(function (el, idx) {
+            if (idx === activeIndex) {
+              el.classList.add('active');
+            } else {
+              el.classList.remove('active');
+            }
+          });
+        }
+
+        if (formEl) {
+          formEl.addEventListener('submit', function () {
+            if (inputEl.value.trim()) {
+              saveHistory(inputEl.value.trim());
+            }
+          });
+        }
+
+        document.addEventListener('click', function (e) {
+          if (!wrapper.contains(e.target)) {
+            dropdown.classList.remove('open');
+          }
+        });
+      }
+
+      function escapeHtml(str) {
+        return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      }
+
+      function escapeRegExp(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      const mainInput = document.getElementById('searchInput');
+      const mainForm = document.getElementById('ddgSearch');
+      if (mainInput) setupSuggestionsForInput(mainInput, mainForm);
+    })();
+  </script>
+  <script src="translate.js"></script>
+</body>
+
+</html>

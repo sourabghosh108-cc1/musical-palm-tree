@@ -1,0 +1,4021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results - Hind.com</title>
+  <meta name="description"
+    content="Search the web with Hind — Bharat's Fast &amp; Secure Search Engine with Shrishti AI answers.">
+  <link rel="icon" type="image/x-icon" href="icon.jpg">
+  <link rel="apple-touch-icon" href="icon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- PDF.js & Mammoth for Document Analysis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --ink: #1e293b;
+      --ink-muted: #64748b;
+      --border: #e2e8f0;
+      --input-bg: #ffffff;
+      --input-border: #e2e8f0;
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.07);
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --purple: #8b5cf6;
+      --purple-dark: #6d28d9;
+      --footer-bg: #ffffff;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --ink: #f1f5f9;
+      --ink-muted: #94a3b8;
+      --border: #334155;
+      --input-bg: #1e293b;
+      --input-border: #334155;
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+      --footer-bg: #0f172a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--blue);
+      border-radius: 4px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── HEADER ── */
+    .search-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .header-logo-link {
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .header-logo-img {
+      height: 44px;
+      width: auto;
+      mix-blend-mode: multiply;
+      transition: transform 0.2s;
+    }
+
+    [data-theme="dark"] .header-logo-link {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 5px 12px;
+      border-radius: 12px;
+    }
+
+    .header-logo-img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Search form in header */
+    .header-search-form {
+      flex: 1;
+      max-width: 560px;
+      position: relative;
+    }
+
+    .header-search-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-search-icon {
+      position: absolute;
+      left: 1rem;
+      color: var(--ink-muted);
+      font-size: 0.9rem;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .header-search-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 3rem 0 2.6rem;
+      border-radius: 22px;
+      border: 1.5px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--ink);
+      font-size: 0.95rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 500;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-search-input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Recent Searches Suggestions Dropdown */
+    .suggest-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: var(--surface, #ffffff);
+      border: 1.5px solid var(--border, rgba(0, 0, 0, 0.12));
+      border-radius: 18px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.16);
+      padding: 0.5rem 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    [data-theme="dark"] .suggest-dropdown {
+      background: #0f172a;
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+      color: #f8fafc;
+    }
+
+    .suggest-dropdown.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .suggest-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.4rem 1.1rem 0.45rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--ink-muted, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    [data-theme="dark"] .suggest-header {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+    }
+
+    .suggest-clear-all {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      transition: background 0.15s ease;
+    }
+
+    .suggest-clear-all:hover {
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .suggest-list {
+      max-height: 280px;
+      overflow-y: auto;
+      margin: 0;
+      padding: 0.25rem 0;
+      list-style: none;
+    }
+
+    .suggest-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink, #1e293b);
+      cursor: pointer;
+      transition: background 0.15s ease, opacity 0.22s ease, transform 0.22s ease, max-height 0.22s ease, padding 0.22s ease;
+    }
+
+    [data-theme="dark"] .suggest-item {
+      color: #e2e8f0;
+    }
+
+    .suggest-item:hover,
+    .suggest-item.active {
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    [data-theme="dark"] .suggest-item:hover,
+    [data-theme="dark"] .suggest-item.active {
+      background: rgba(37, 99, 235, 0.22);
+    }
+
+    .suggest-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .suggest-item-icon {
+      font-size: 0.82rem;
+      color: var(--ink-muted, #94a3b8);
+      flex-shrink: 0;
+    }
+
+    .suggest-match-hl {
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    [data-theme="dark"] .suggest-match-hl {
+      color: #60a5fa;
+    }
+
+    .suggest-delete-btn {
+      background: transparent;
+      border: none;
+      color: var(--ink-muted, #94a3b8);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .suggest-delete-btn:hover {
+      background: rgba(239, 68, 68, 0.12);
+      color: #ef4444;
+    }
+
+    /* Removal animation */
+    .suggest-item.removing {
+      opacity: 0;
+      transform: translateX(-15px);
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      overflow: hidden;
+    }
+
+    .header-search-btn {
+      position: absolute;
+      right: 0.3rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+
+    .header-search-btn:hover {
+      transform: scale(1.08);
+    }
+
+    /* Mic button in search bar */
+    .voice-mic-btn {
+      position: absolute;
+      right: 2.7rem;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+
+    .voice-mic-btn:hover {
+      color: var(--blue);
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    .voice-mic-btn.listening {
+      color: #dc2626;
+      background: rgba(220, 38, 38, 0.1);
+      animation: micPulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes micPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.35);
+      }
+
+      50% {
+        box-shadow: 0 0 0 7px rgba(220, 38, 38, 0);
+      }
+    }
+
+    /* Header right */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .theme-btn {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--ink-muted);
+      padding: 0.38rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .theme-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .nav-link-btn {
+      color: var(--ink-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 0.38rem 0.7rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-link-btn:hover {
+      color: var(--blue);
+      background: rgba(37, 99, 235, 0.07);
+    }
+
+    /* ── AI ANSWER CARD ── */
+    .ai-answer-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--purple);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.25rem;
+    }
+
+    .ai-answer-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--purple);
+      margin-bottom: 0.75rem;
+    }
+
+    .ai-answer-content {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+
+    .ai-typing-dots {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .ai-typing-dots span {
+      width: 7px;
+      height: 7px;
+      background: var(--purple);
+      border-radius: 50%;
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+
+    .ai-typing-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .ai-typing-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingBounce {
+
+      0%,
+      80%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.4;
+      }
+
+      40% {
+        transform: translateY(-6px);
+        opacity: 1;
+      }
+    }
+
+    /* ── SEARCH TABS NAV ── */
+    .search-tabs-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 65px;
+      z-index: 190;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .search-tabs-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .search-tabs-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .search-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      white-space: nowrap;
+      transition: color 0.15s ease;
+      border-bottom: 3px solid transparent;
+    }
+
+    .search-tab-btn i {
+      font-size: 0.88rem;
+    }
+
+    .search-tab-btn:hover {
+      color: var(--blue);
+    }
+
+    .search-tab-btn.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+
+    [data-theme="dark"] .search-tab-btn.active {
+      color: #60a5fa;
+      border-bottom-color: #60a5fa;
+    }
+
+    /* ── RESULTS AREA ── */
+    .results-main {
+      flex: 1;
+      padding: 1.5rem 1.5rem 2.5rem;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .results-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .search-meta-bar {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .search-meta-query {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* Web Result Card */
+    .web-result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+
+    .web-result-card:hover {
+      border-color: rgba(37, 99, 235, 0.4);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .result-cite-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.78rem;
+      color: #059669;
+      margin-bottom: 0.35rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    [data-theme="dark"] .result-cite-row {
+      color: #34d399;
+    }
+
+    .result-domain {
+      font-weight: 700;
+      color: var(--ink-muted);
+    }
+
+    .result-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 0.4rem;
+    }
+
+    .result-title a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    [data-theme="dark"] .result-title a {
+      color: #60a5fa;
+    }
+
+    .result-title a:hover {
+      text-decoration: underline;
+    }
+
+    .result-snippet {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--ink);
+      word-break: break-word;
+    }
+
+    /* Images Grid */
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .image-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .image-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--blue);
+    }
+
+    .image-thumb-wrap {
+      width: 100%;
+      height: 160px;
+      background: rgba(0, 0, 0, 0.04);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    [data-theme="dark"] .image-thumb-wrap {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .image-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.25s ease;
+    }
+
+    .image-card:hover .image-thumb-wrap img {
+      transform: scale(1.05);
+    }
+
+    .image-meta {
+      padding: 0.65rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .image-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink);
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.35;
+      text-decoration: none;
+    }
+
+    .image-title:hover {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+
+    .image-source {
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Classy Video Cards & Grid Design */
+    .videos-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.35rem;
+    }
+
+    @media (max-width: 640px) {
+      .videos-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .video-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+      position: relative;
+    }
+
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      border-color: rgba(37, 99, 235, 0.4);
+    }
+
+    [data-theme="dark"] .video-card {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="dark"] .video-card:hover {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      border-color: rgba(96, 165, 250, 0.4);
+    }
+
+    .video-thumb-link {
+      width: 100%;
+      height: 195px;
+      position: relative;
+      background: #090d16;
+      display: block;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .video-thumb-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease, opacity 0.3s ease;
+    }
+
+    .video-card:hover .video-thumb-link img {
+      transform: scale(1.05);
+    }
+
+    .video-play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.55) 100%);
+      transition: background 0.25s ease;
+    }
+
+    .video-play-btn-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.92);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      padding-left: 3px;
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+    }
+
+    .video-card:hover .video-play-btn-circle {
+      transform: scale(1.15);
+      background: #dc2626;
+      box-shadow: 0 8px 25px rgba(220, 38, 38, 0.7);
+    }
+
+    .video-duration-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(6px);
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .video-platform-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(6px);
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .video-platform-badge i {
+      color: #ef4444;
+    }
+
+    .video-info {
+      padding: 1.1rem 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 0.5rem;
+    }
+
+    .video-publisher-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .video-publisher {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--blue);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+    }
+
+    .video-publisher .publisher-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(37, 99, 235, 0.12);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--blue);
+    }
+
+    [data-theme="dark"] .video-publisher .publisher-avatar {
+      background: rgba(96, 165, 250, 0.2);
+      color: #60a5fa;
+    }
+
+    .video-card .result-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.38;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .video-card .result-snippet {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      line-height: 1.45;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .video-footer-actions {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+    }
+
+    .video-watch-btn {
+      background: linear-gradient(135deg, var(--blue), #1d4ed8);
+      color: #ffffff !important;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .video-watch-btn:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .video-ext-btn {
+      color: var(--ink-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .video-ext-btn:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--ink);
+    }
+
+    [data-theme="dark"] .video-ext-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+
+    /* Google-Style Hind Pagination */
+    .hind-pagination {
+      margin: 2.5rem 0 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      padding: 1.25rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .page-numbers-group {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .page-btn {
+      min-width: 38px;
+      height: 38px;
+      padding: 0 0.65rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .page-btn:hover:not(.disabled):not(.active) {
+      background: rgba(37, 99, 235, 0.08);
+      border-color: var(--blue);
+      color: var(--blue);
+      transform: translateY(-1px);
+    }
+
+    .page-btn.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      cursor: default;
+    }
+
+    [data-theme="dark"] .page-btn.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.45);
+    }
+
+    .page-nav-btn {
+      padding: 0 1rem;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .page-nav-btn.disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+      pointer-events: none;
+      border-color: var(--border);
+      color: var(--ink-muted);
+    }
+
+    .page-ellipsis {
+      padding: 0 0.35rem;
+      color: var(--ink-muted);
+      font-weight: 700;
+      user-select: none;
+    }
+
+    /* Video Theater Modal */
+    .video-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .video-modal-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .video-modal-content {
+      width: 100%;
+      max-width: 920px;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.75);
+      transform: scale(0.95);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .video-modal-backdrop.open .video-modal-content {
+      transform: scale(1);
+    }
+
+    .video-modal-header {
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .video-modal-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-right: 1rem;
+    }
+
+    .video-modal-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .video-modal-close:hover {
+      background: #ef4444;
+    }
+
+    .video-modal-body {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      background: #000000;
+    }
+
+    .video-modal-body iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* News Cards */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .news-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .news-card:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(37, 99, 235, 0.4);
+    }
+
+    .news-meta-top {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+    }
+
+    .news-source-badge {
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--blue);
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+    }
+
+    [data-theme="dark"] .news-source-badge {
+      background: rgba(96, 165, 250, 0.15);
+      color: #60a5fa;
+    }
+
+    .news-date {
+      color: var(--ink-muted);
+    }
+
+    /* Multi-category "All" section styles */
+    .section-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.65rem;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .section-header a {
+      font-size: 0.82rem;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .section-header a:hover {
+      text-decoration: underline;
+    }
+
+    /* Skeleton Loading State */
+    .skeleton-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .skeleton-line {
+      height: 14px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, rgba(148, 163, 184, 0.12) 25%, rgba(148, 163, 184, 0.28) 50%, rgba(148, 163, 184, 0.12) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    .skeleton-line.short {
+      width: 30%;
+      height: 12px;
+    }
+
+    .skeleton-line.title {
+      width: 65%;
+      height: 20px;
+    }
+
+    .skeleton-line.snippet-1 {
+      width: 95%;
+    }
+
+    .skeleton-line.snippet-2 {
+      width: 80%;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    /* Empty and Error states */
+    .status-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .status-icon {
+      font-size: 2.5rem;
+      color: var(--ink-muted);
+      opacity: 0.7;
+      margin-bottom: 0.25rem;
+    }
+
+    .status-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .status-desc {
+      font-size: 0.92rem;
+      color: var(--ink-muted);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    .status-code-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      font-family: monospace;
+      font-size: 0.82rem;
+      color: var(--ink);
+      margin: 0.5rem 0;
+      text-align: left;
+    }
+
+    .retry-btn {
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 0.55rem 1.4rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .retry-btn:hover {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+    }
+
+    /* ── SHRISHTI AI FAB ── */
+    .ai-fab {
+      position: fixed;
+      bottom: 1.75rem;
+      right: 1.75rem;
+      z-index: 9999;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%);
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .ai-fab:hover {
+      transform: scale(1.1) rotate(-8deg);
+      box-shadow: 0 12px 30px rgba(139, 92, 246, 0.55);
+    }
+
+    .ai-fab.active {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      box-shadow: 0 8px 24px rgba(220, 38, 38, 0.45);
+      transform: rotate(45deg);
+    }
+
+    /* ── AI CHAT PANEL ── */
+    .ai-panel {
+      position: fixed;
+      bottom: 5.5rem;
+      right: 1.75rem;
+      z-index: 9998;
+      width: 340px;
+      height: 490px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.88) translateY(18px);
+      transform-origin: bottom right;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+
+    .ai-panel.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: scale(1) translateY(0);
+    }
+
+    .ai-panel-header {
+      background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+      color: #fff;
+      padding: 0.9rem 1.2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ai-panel-header span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ai-badge-beta {
+      background: rgba(255, 255, 255, 0.2);
+      font-size: 0.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .ai-panel-disclaimer {
+      position: absolute;
+      inset: 0;
+      background: var(--surface);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      border-radius: 20px;
+    }
+
+    .ai-panel-disclaimer p {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .ai-disclaimer-btn {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 0.55rem 2rem;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .ai-disclaimer-btn:hover {
+      background: var(--purple-dark);
+    }
+
+    .ai-body {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      font-size: 0.9rem;
+    }
+
+    .ai-msg {
+      max-width: 88%;
+      padding: 0.65rem 0.9rem;
+      border-radius: 14px;
+      line-height: 1.5;
+    }
+
+    .ai-msg.bot {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .ai-msg.user {
+      background: rgba(139, 92, 246, 0.14);
+      color: var(--ink);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai-input-row {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .ai-input {
+      flex: 1;
+      height: 38px;
+      border: 1.5px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--ink);
+      border-radius: 19px;
+      padding: 0 1rem;
+      font-size: 0.88rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .ai-input:focus {
+      border-color: var(--purple);
+    }
+
+    .ai-send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: var(--purple);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.88rem;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .ai-send-btn:hover {
+      background: var(--purple-dark);
+    }
+
+    .ai-voice-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink-muted);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .ai-voice-btn:hover {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--purple);
+      border-color: var(--purple);
+    }
+
+    .ai-voice-btn.listening {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-color: #ef4444;
+      animation: pulse-search-mic 1.2s infinite;
+    }
+
+    @keyframes pulse-search-mic {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+      }
+
+      70% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+      }
+    }
+
+    .ai-speak-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink-muted);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+    }
+
+    .ai-speak-btn:hover {
+      background: rgba(139, 92, 246, 0.12);
+      color: var(--purple);
+      border-color: var(--purple);
+    }
+
+    .ai-speak-btn.speaking {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .ai-msg-speak-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink-muted);
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+      vertical-align: middle;
+    }
+
+    .ai-msg-speak-btn:hover {
+      background: rgba(139, 92, 246, 0.12);
+      color: var(--purple);
+      border-color: var(--purple);
+    }
+
+    .ai-msg-speak-btn.speaking {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .ai-footer-note {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      padding: 0.4rem 1rem 0.65rem;
+    }
+
+    .shrishti-model-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+    }
+
+    .shrishti-model-select {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+      max-width: 175px;
+    }
+
+    .shrishti-quota-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--purple-dark);
+      border-radius: 12px;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    [data-theme="dark"] .shrishti-quota-badge {
+      color: #c4b5fd;
+    }
+
+    /* ── FOOTER ── */
+    .footer-container {
+      padding: 1.5rem 1rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      background: var(--footer-bg);
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+    }
+
+    .footer-links a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+
+    /* ── HISTORY PANEL ── */
+    .hist-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 340px;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15);
+      z-index: 9997;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hist-panel.open {
+      transform: translateX(0);
+    }
+
+    .hist-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 9996;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .hist-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .hist-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+    }
+
+    .hist-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hist-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hist-clear-btn {
+      background: rgba(220, 38, 38, 0.08);
+      border: 1px solid rgba(220, 38, 38, 0.25);
+      color: #dc2626;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .hist-clear-btn:hover {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .hist-close-btn {
+      background: none;
+      border: none;
+      color: var(--ink-muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .hist-close-btn:hover {
+      background: var(--border);
+      color: var(--ink);
+    }
+
+    .hist-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.75rem 0;
+    }
+
+    .hist-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--ink-muted);
+      font-size: 0.9rem;
+      gap: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .hist-empty i {
+      font-size: 2rem;
+      opacity: 0.3;
+    }
+
+    .hist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 1.25rem;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hist-item:hover {
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .hist-item-icon {
+      color: var(--ink-muted);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .hist-item-text {
+      flex: 1;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hist-item-time {
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      flex-shrink: 0;
+    }
+
+    .hist-item-del {
+      background: none;
+      border: none;
+      color: var(--ink-muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 0.2rem;
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .hist-item:hover .hist-item-del {
+      opacity: 1;
+    }
+
+    .hist-item-del:hover {
+      color: #dc2626;
+    }
+
+    @media (max-width: 640px) {
+      .search-header {
+        padding: 0.65rem 0.85rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem 0;
+      }
+
+      .header-left {
+        display: contents;
+      }
+
+      .header-logo-link {
+        order: 1;
+        margin-right: auto;
+      }
+
+      .header-logo-img {
+        height: 32px;
+      }
+
+      [data-theme="dark"] .header-logo-link {
+        padding: 4px 10px;
+        border-radius: 10px;
+      }
+
+      .header-right {
+        order: 2;
+        gap: 0.35rem;
+      }
+
+      .theme-btn {
+        padding: 0.32rem 0.55rem;
+        font-size: 0.8rem;
+      }
+
+      .nav-link-btn {
+        padding: 0.32rem 0.55rem;
+        font-size: 0.8rem;
+      }
+
+      .header-search-form {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0.35rem;
+      }
+
+      .header-search-input {
+        height: 44px;
+        font-size: 0.92rem;
+        padding-left: 2.5rem;
+        padding-right: 5.2rem !important;
+        border-radius: 22px;
+      }
+
+      .header-search-icon {
+        left: 0.9rem;
+        font-size: 0.95rem;
+      }
+
+      .voice-mic-btn {
+        right: 2.7rem;
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+      }
+
+      .header-search-btn {
+        right: 0.35rem;
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+      }
+
+      .search-tabs-nav {
+        top: 102px;
+      }
+
+      .search-tabs-container {
+        padding: 0 0.75rem;
+        gap: 0.35rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .search-tabs-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .search-tab-btn {
+        padding: 0.5rem 0.85rem;
+        font-size: 0.84rem;
+        white-space: nowrap;
+      }
+
+      .results-main {
+        padding: 0.85rem 0.85rem 2.5rem;
+      }
+
+      .ai-answer-card {
+        padding: 1rem 1.1rem;
+        border-radius: 14px;
+        margin-bottom: 1rem;
+      }
+
+      .ai-answer-content {
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .ai-panel {
+        width: calc(100vw - 1.5rem);
+        right: 0.75rem;
+        bottom: 4.5rem;
+        max-height: 75vh;
+        border-radius: 20px;
+      }
+
+      .hist-panel {
+        width: 100vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="search-header">
+    <div class="header-left">
+      <a href="index.html" class="header-logo-link" title="Hind Home">
+        <img src="download.png" alt="Hind" class="header-logo-img">
+      </a>
+
+      <form method="get" action="search.html" id="searchHeaderForm" class="header-search-form">
+        <div class="header-search-group">
+          <i class="fa-solid fa-magnifying-glass header-search-icon"></i>
+          <input type="text" name="q" id="searchInputHeader" class="header-search-input" placeholder="Search Hind..."
+            aria-label="Search" autocomplete="off" style="padding-right: 4.8rem;" />
+          <button type="button" class="voice-mic-btn" id="voiceMicBtn" title="Voice search" aria-label="Voice search">
+            <i class="fa-solid fa-microphone" id="voiceMicIcon"></i>
+          </button>
+          <button type="submit" class="header-search-btn" aria-label="Search">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="header-right">
+      <button id="themeToggle" class="theme-btn" aria-label="Toggle dark mode">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+        <span id="themeText" class="d-none d-sm-inline">Dark</span>
+      </button>
+      <button id="historyBtn" class="theme-btn" aria-label="Search History" title="Search History">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span class="d-none d-sm-inline">History</span>
+      </button>
+      <a href="settings.html" class="theme-btn text-decoration-none" aria-label="Settings" title="Settings">
+        <i class="fa-solid fa-gear"></i>
+        <span class="d-none d-sm-inline">Settings</span>
+      </a>
+      <a href="about.html" class="nav-link-btn"><i class="fa-solid fa-circle-info me-1"></i>About</a>
+    </div>
+  </header>
+
+  <!-- ── SEARCH TABS NAV ── -->
+  <nav class="search-tabs-nav" aria-label="Search Categories">
+    <div class="search-tabs-container">
+      <button type="button" class="search-tab-btn active" data-type="all" id="tabAll">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>All</span>
+      </button>
+      <button type="button" class="search-tab-btn" data-type="images" id="tabImages">
+        <i class="fa-regular fa-image"></i>
+        <span>Images</span>
+      </button>
+      <button type="button" class="search-tab-btn" data-type="videos" id="tabVideos">
+        <i class="fa-solid fa-play"></i>
+        <span>Videos</span>
+      </button>
+      <button type="button" class="search-tab-btn" data-type="news" id="tabNews">
+        <i class="fa-regular fa-newspaper"></i>
+        <span>News</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <main class="results-main">
+
+    <!-- Shrishti AI Answer (shown only when query exists) -->
+    <div id="aiSearchAnswer" class="ai-answer-card" style="display:none;">
+      <div class="ai-answer-label">
+        <span><i class="fa-solid fa-sparkles"></i> Shrishti AI</span>
+        <button type="button" id="aiSearchAnswerSpeakBtn" class="ai-speak-btn" onclick="toggleSpeakAiMessage(this)"
+          title="Listen to AI answer" style="margin-left:auto;margin-right:0.6rem;">
+          <i class="fa-solid fa-volume-high"></i> <span>Listen</span>
+        </button>
+        <span id="aiSearchQuotaBadge"
+          style="font-size:0.75rem;font-weight:700;text-transform:none;letter-spacing:normal;"></span>
+      </div>
+      <div id="aiSearchAnswerContent" class="ai-answer-content">
+        <div class="ai-typing-dots"><span></span><span></span><span></span></div>
+        &nbsp;Generating answer...
+      </div>
+    </div>
+
+    <!-- Hind Search Results Container -->
+    <div id="searchResultsContainer" class="results-container" aria-live="polite">
+      <!-- Injected by JavaScript -->
+    </div>
+
+  </main>
+
+  <!-- ── SHRISHTI AI FAB ── -->
+  <button class="ai-fab" id="aiFab" aria-label="Open Shrishti AI" title="Chat with Shrishti AI">
+    <i class="fa-solid fa-robot" id="aiFabIcon"></i>
+  </button>
+
+  <!-- ── AI CHAT PANEL ── -->
+  <div class="ai-panel" id="aiPanel" role="dialog" aria-label="Shrishti AI Chatbot">
+    <!-- Disclaimer -->
+    <div class="ai-panel-disclaimer" id="aiDisclaimer">
+      <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;color:#f59e0b;margin-bottom:0.75rem;"></i>
+      <p>Shrishti AI may produce inaccurate information. Data knowledge cutoff may apply.</p>
+      <button class="ai-disclaimer-btn"
+        onclick="document.getElementById('aiDisclaimer').style.display='none'; document.getElementById('aiInput').focus();">
+        Got it, Continue
+      </button>
+    </div>
+
+    <div class="ai-panel-header">
+      <span><i class="fa-solid fa-sparkles"></i> Shrishti AI <span class="ai-badge-beta">BETA</span></span>
+      <span class="shrishti-quota-badge" id="shrishtiSearchQuotaBadge">15/15 daily queries left</span>
+    </div>
+
+    <div class="shrishti-model-bar">
+      <div style="display:flex;align-items:center;gap:0.35rem;">
+        <span style="font-weight:600;color:var(--ink-muted);font-size:0.75rem;"><i
+            class="fa-solid fa-microchip me-1"></i></span>
+        <select id="shrishtiModelSelect" class="shrishti-model-select"
+          title="Choose AI Model (with automatic fallback cushion)">
+          <option value="lemon-pineapple-a">Lemon Pineapple a</option>
+          <option value="cyan-hind-b">Cyan Hind b</option>
+        </select>
+      </div>
+      <span class="shrishti-pro-badge" id="shrishtiSearchProBadge"
+        style="display:inline-flex;align-items:center;background:rgba(245,158,11,0.22);color:#f59e0b;border-radius:10px;padding:0.15rem 0.5rem;font-size:0.7rem;font-weight:700;white-space:nowrap;cursor:help;"
+        title="Pro Credits: 10/day (2 credits per image = 5 images/day, 5 credits per doc/image = 2 files/day)">⚡ 10/10
+        Pro Credits</span>
+    </div>
+
+    <div class="ai-body" id="aiBody">
+      <div class="ai-msg bot">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:0.75rem;font-weight:700;color:var(--purple);"><i
+              class="fa-solid fa-robot me-1"></i>Shrishti AI</span>
+          <button type="button" class="ai-msg-speak-btn" onclick="toggleSpeakAiMessage(this)"
+            title="Listen to message"><i class="fa-solid fa-volume-high"></i></button>
+        </div>
+        Namaste! 🙏 I'm Shrishti AI by Hind.com. Powered by <strong>2 cushioned models</strong>.<br><br>
+        <span style="font-size:0.8rem;color:var(--ink-muted);">
+          ✨ <strong>Creative &amp; Analysis Features:</strong><br>
+          • 🎨 <strong>Generate Image:</strong> Type <code>/image &lt;prompt&gt;</code> (2 credits)<br>
+          • 📎 <strong>Analyse Files:</strong> Upload any Doc, PDF, or Image (5 credits)<br>
+          • ⚡ <strong>10 daily Pro credits</strong> replenished every midnight!
+        </span>
+      </div>
+    </div>
+
+    <!-- Pending Attachment Chip -->
+    <div id="aiPendingAttachment"
+      style="display:none;padding:0.4rem 0.85rem;background:rgba(139,92,246,0.12);border-top:1px solid var(--border);font-size:0.75rem;align-items:center;justify-content:space-between;color:var(--ink);">
+      <span
+        style="display:flex;align-items:center;gap:0.4rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+        <i class="fa-solid fa-paperclip" style="color:var(--purple);"></i> <strong
+          id="aiAttachedFileName">document</strong> <span style="color:var(--purple);">(5 credits)</span>
+      </span>
+      <button type="button" onclick="clearAiAttachment()"
+        style="background:none;border:none;color:var(--ink-muted);cursor:pointer;padding:2px 6px;"
+        title="Remove attachment"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Hidden File Input (PDF, DOCX, Transcripts) -->
+    <input type="file" id="aiFileInput" accept=".pdf,.docx,.doc,.txt,.vtt,.srt" style="display:none;"
+      onchange="handleAiFileSelect(event)" />
+
+    <div class="ai-input-row" style="gap:0.4rem;">
+      <button type="button" id="aiAttachBtn" onclick="document.getElementById('aiFileInput').click()"
+        title="Analyse PDF, DOCX or Transcript (costs 5 Pro Credits)"
+        style="background:transparent;border:1px solid var(--border);color:var(--ink-muted);width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;">
+        <i class="fa-solid fa-paperclip"></i>
+      </button>
+      <button type="button" id="aiImageBtn" onclick="toggleImageGenPrompt()"
+        title="Generate AI Image (costs 2 Pro Credits)"
+        style="background:transparent;border:1px solid var(--border);color:#f59e0b;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      </button>
+      <input type="text" id="aiInput" class="ai-input" placeholder="Ask Shrishti AI, or /image to draw..."
+        onkeypress="if(event.key==='Enter') sendAiMessage()">
+      <button type="button" id="aiVoiceBtn" class="ai-voice-btn" title="Voice Input (speak to Shrishti)"
+        aria-label="Voice Input">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
+      <button class="ai-send-btn" onclick="sendAiMessage()" style="flex-shrink:0;" aria-label="Send">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+    <div class="ai-footer-note">AI can make mistakes • 2 credits/image • 5 credits/Doc &amp; Transcript summary</div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer-container">
+    <div class="footer-brand">© 2026 Lemon India DAO</div>
+    <div class="footer-links">
+      <a href="about.html">About &amp; Privacy Policy</a>
+      <span>•</span>
+      <a href="LICENSE" target="_blank" rel="noopener">Open Source License</a>
+      <span>•</span>
+      <span>Copyright 2026 all rights reserved</span>
+    </div>
+  </footer>
+
+  <!-- ── HISTORY PANEL ── -->
+  <div class="hist-backdrop" id="histBackdrop"></div>
+  <aside class="hist-panel" id="histPanel" aria-label="Search History">
+    <div class="hist-header">
+      <span class="hist-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--blue);"></i> Search
+        History</span>
+      <div class="hist-actions">
+        <button class="hist-clear-btn" id="histClearBtn"><i class="fa-solid fa-trash me-1"></i>Clear All</button>
+        <button class="hist-close-btn" id="histCloseBtn" aria-label="Close history"><i
+            class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="hist-body" id="histBody"></div>
+  </aside>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="shrishti-engine.js"></script>
+  <script>
+    // ── Dark Mode ──
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('hind_theme', theme);
+      if (theme === 'dark') {
+        themeIcon.className = 'fa-solid fa-sun';
+        themeIcon.style.color = '#f59e0b';
+        if (themeText) themeText.textContent = 'Light';
+      } else {
+        themeIcon.className = 'fa-solid fa-moon';
+        themeIcon.style.color = '';
+        if (themeText) themeText.textContent = 'Dark';
+      }
+    }
+
+    const savedTheme = localStorage.getItem('hind_theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    // ── Search History (localStorage) ──
+    const HIST_KEY = 'hind_search_history';
+
+    function getHistory() {
+      try { return JSON.parse(localStorage.getItem(HIST_KEY)) || []; }
+      catch { return []; }
+    }
+
+    function saveToHistory(q) {
+      if (!q || !q.trim()) return;
+      let hist = getHistory();
+      // Remove duplicate if exists
+      hist = hist.filter(h => h.q.toLowerCase() !== q.toLowerCase());
+      hist.unshift({ q: q.trim(), t: Date.now() });
+      // Keep max 50
+      if (hist.length > 50) hist = hist.slice(0, 50);
+      localStorage.setItem(HIST_KEY, JSON.stringify(hist));
+    }
+
+    function formatTime(ts) {
+      const diff = Date.now() - ts;
+      if (diff < 60000) return 'just now';
+      if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+      if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+      return new Date(ts).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    }
+
+    function renderHistory() {
+      const histBody = document.getElementById('histBody');
+      const hist = getHistory();
+      if (!hist.length) {
+        histBody.innerHTML = `<div class="hist-empty"><i class="fa-solid fa-clock-rotate-left"></i><span>No search history yet.</span><small>Your searches will appear here.</small></div>`;
+        return;
+      }
+      histBody.innerHTML = hist.map((h, i) => `
+        <div class="hist-item" data-q="${h.q.replace(/"/g, '&quot;')}">
+          <i class="fa-solid fa-magnifying-glass hist-item-icon"></i>
+          <span class="hist-item-text">${h.q.replace(/</g, '&lt;')}</span>
+          <span class="hist-item-time">${formatTime(h.t)}</span>
+          <button class="hist-item-del" data-idx="${i}" title="Remove" onclick="event.stopPropagation(); removeHistItem(${i})">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      `).join('');
+      histBody.querySelectorAll('.hist-item').forEach(el => {
+        el.addEventListener('click', () => {
+          window.location.href = 'search.html?q=' + encodeURIComponent(el.dataset.q);
+        });
+      });
+    }
+
+    function removeHistItem(idx) {
+      const hist = getHistory();
+      hist.splice(idx, 1);
+      localStorage.setItem(HIST_KEY, JSON.stringify(hist));
+      renderHistory();
+    }
+
+    // History panel open/close
+    const histBtn = document.getElementById('historyBtn');
+    const histPanel = document.getElementById('histPanel');
+    const histBackdrop = document.getElementById('histBackdrop');
+    const histCloseBtn = document.getElementById('histCloseBtn');
+    const histClearBtn = document.getElementById('histClearBtn');
+
+    function openHistory() {
+      renderHistory();
+      histPanel.classList.add('open');
+      histBackdrop.classList.add('open');
+    }
+
+    function closeHistory() {
+      histPanel.classList.remove('open');
+      histBackdrop.classList.remove('open');
+    }
+
+    histBtn.addEventListener('click', () => {
+      histPanel.classList.contains('open') ? closeHistory() : openHistory();
+    });
+    histCloseBtn.addEventListener('click', closeHistory);
+    histBackdrop.addEventListener('click', closeHistory);
+    histClearBtn.addEventListener('click', () => {
+      if (confirm('Clear all search history? This cannot be undone.')) {
+        localStorage.removeItem(HIST_KEY);
+        renderHistory();
+      }
+    });
+
+    // ── HIND SEARCH API INTEGRATION (Vercel Serverless + Local) ──
+    const API_BASE_URL = (window.location.protocol.startsWith('http') && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1'))
+      ? ''
+      : (window.location.port === '8000' ? '' : 'http://127.0.0.1:8000');
+
+    let currentQuery = '';
+    let currentType = 'web';
+    let searchAbortController = null;
+
+    // Utility: HTML Escaping
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Utility: URL Sanitization
+    function sanitizeUrl(url) {
+      if (!url) return '#';
+      try {
+        const parsed = new URL(url, window.location.href);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+          return parsed.href;
+        }
+      } catch (e) { }
+      return '#';
+    }
+
+    // Utility: Domain extraction
+    function getDomain(url) {
+      try {
+        const parsed = new URL(url);
+        return parsed.hostname.replace(/^www\./, '');
+      } catch (e) {
+        return 'web';
+      }
+    }
+
+    // Utility: URL Truncate
+    function truncateUrl(url, maxLen = 65) {
+      if (!url) return '';
+      return url.length <= maxLen ? url : url.substring(0, maxLen) + '...';
+    }
+
+    // Utility: Date formatter
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      try {
+        const d = new Date(dateStr);
+        if (!isNaN(d.getTime())) {
+          return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+      } catch (e) { }
+      return dateStr;
+    }
+
+    // Utility: Duration seconds → MM:SS
+    function formatDuration(secs) {
+      if (!secs || isNaN(secs)) return 'HD';
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    // Update Tab UI
+    function setActiveTabUI(type) {
+      document.querySelectorAll('.search-tab-btn').forEach(btn => {
+        const btnType = btn.dataset.type;
+        if ((type === 'web' || type === 'all') && btnType === 'all') {
+          btn.classList.add('active');
+        } else if (btnType === type) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    // Render Skeletons during Loading
+    function renderLoadingSkeletons(query, type) {
+      const container = document.getElementById('searchResultsContainer');
+      let skeletonsHtml = `
+        <div class="search-meta-bar">
+          <span><i class="fa-solid fa-spinner fa-spin me-2" style="color:var(--blue);"></i>Searching Hind for <strong class="search-meta-query">${escapeHtml(query)}</strong>...</span>
+        </div>
+      `;
+
+      if (type === 'images') {
+        skeletonsHtml += `<div class="images-grid">`;
+        for (let i = 0; i < 8; i++) {
+          skeletonsHtml += `
+            <div class="image-card">
+              <div class="image-thumb-wrap" style="height:150px;">
+                <div class="skeleton-line" style="width:100%;height:100%;"></div>
+              </div>
+              <div class="image-meta">
+                <div class="skeleton-line title" style="width:85%;height:14px;"></div>
+                <div class="skeleton-line short" style="width:50%;height:10px;"></div>
+              </div>
+            </div>
+          `;
+        }
+        skeletonsHtml += `</div>`;
+      } else {
+        for (let i = 0; i < 4; i++) {
+          skeletonsHtml += `
+            <div class="skeleton-card">
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line title"></div>
+              <div class="skeleton-line snippet-1"></div>
+              <div class="skeleton-line snippet-2"></div>
+            </div>
+          `;
+        }
+      }
+
+      container.innerHTML = skeletonsHtml;
+    }
+
+    // Render Web Results
+    function renderWebResults(items, query) {
+      let html = `
+        <div class="search-meta-bar">
+          <span>About ${items.length} results for <strong class="search-meta-query">${escapeHtml(query)}</strong></span>
+        </div>
+      `;
+      items.forEach(item => {
+        const safeUrl = sanitizeUrl(item.url);
+        const domain = getDomain(item.url);
+        html += `
+          <article class="web-result-card">
+            <div class="result-cite-row">
+              <i class="fa-solid fa-globe" style="font-size: 0.75rem; opacity: 0.7;"></i>
+              <span class="result-domain">${escapeHtml(domain)}</span>
+              <span class="result-url-path">${escapeHtml(truncateUrl(item.url))}</span>
+            </div>
+            <h2 class="result-title">
+              <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || 'Untitled Result')}</a>
+            </h2>
+            <p class="result-snippet">${escapeHtml(item.snippet || 'No description available.')}</p>
+          </article>
+        `;
+      });
+      return html;
+    }
+
+    // Render Image Results
+    function renderImageResults(items, query) {
+      let html = `
+        <div class="search-meta-bar">
+          <span>Found ${items.length} images for <strong class="search-meta-query">${escapeHtml(query)}</strong></span>
+        </div>
+        <div class="images-grid">
+      `;
+      items.forEach(item => {
+        const safeImg = sanitizeUrl(item.image || item.thumbnail);
+        const safeThumb = sanitizeUrl(item.thumbnail || item.image);
+        const safeSource = sanitizeUrl(item.source || item.image);
+        const domain = getDomain(item.source || item.image);
+        html += `
+          <div class="image-card">
+            <a href="${safeImg}" target="_blank" rel="noopener noreferrer" class="image-thumb-wrap" title="${escapeHtml(item.title || 'Image')}">
+              <img src="${safeThumb}" alt="${escapeHtml(item.title || 'Image')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'%3E%3Crect width=\\'100\\' height=\\'100\\' fill=\\'%23eee\\'/%3E%3Ctext x=\\'50\\' y=\\'55\\' font-family=\\'sans-serif\\' font-size=\\'12\\' text-anchor=\\'middle\\' fill=\\'%23999\\'%3EImage%3C/text%3E%3C/svg%3E'" />
+            </a>
+            <div class="image-meta">
+              <a href="${safeSource}" target="_blank" rel="noopener noreferrer" class="image-title">${escapeHtml(item.title || 'View image source')}</a>
+              <span class="image-source">${escapeHtml(domain)}</span>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    // Utility: Extract YouTube ID
+    function getYouTubeId(url) {
+      if (!url) return null;
+      const m = String(url).match(/(?:v=|\/embed\/|\/shorts\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      return m ? m[1] : null;
+    }
+
+    // Video Theater Modal Open/Close handlers
+    window.openVideoModal = function (videoId, title) {
+      let modal = document.getElementById('hindVideoModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'hindVideoModal';
+        modal.className = 'video-modal-backdrop';
+        modal.innerHTML = `
+          <div class="video-modal-content">
+            <div class="video-modal-header">
+              <div class="video-modal-title" id="hindVideoModalTitle"><i class="fa-brands fa-youtube me-2 text-danger"></i><span></span></div>
+              <button type="button" class="video-modal-close" onclick="closeVideoModal()" title="Close video player"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="video-modal-body">
+              <iframe id="hindVideoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeVideoModal();
+        });
+      }
+      const titleSpan = document.querySelector('#hindVideoModalTitle span');
+      if (titleSpan) titleSpan.textContent = title || 'Video Player';
+      const iframe = document.getElementById('hindVideoIframe');
+      if (iframe) iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeVideoModal = function () {
+      const modal = document.getElementById('hindVideoModal');
+      if (modal) {
+        modal.classList.remove('open');
+        const iframe = document.getElementById('hindVideoIframe');
+        if (iframe) iframe.src = '';
+        document.body.style.overflow = '';
+      }
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeVideoModal();
+    });
+
+    // Render Video Results
+    function renderVideoResults(items, query) {
+      let html = `
+        <div class="search-meta-bar">
+          <span>Found ${items.length} curated videos for <strong class="search-meta-query">${escapeHtml(query)}</strong></span>
+        </div>
+        <div class="videos-list">
+      `;
+      items.forEach(item => {
+        const safeUrl = sanitizeUrl(item.url);
+        const vid = item.videoId || getYouTubeId(item.url);
+        let safeThumb = sanitizeUrl(item.thumbnail);
+        if (vid && (!safeThumb || safeThumb === '#' || safeThumb.includes('placeholder'))) {
+          safeThumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+        } else if (!safeThumb || safeThumb === '#') {
+          safeThumb = 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80';
+        }
+        const publisher = item.publisher || (vid ? 'YouTube' : 'Video');
+        const duration = item.duration || 'HD';
+        const isYt = !!vid;
+
+        html += `
+          <article class="video-card">
+            <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="video-thumb-link" title="Play ${escapeHtml(item.title || 'Video')}">
+              <img src="${safeThumb}" alt="${escapeHtml(item.title || 'Video')}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80'" />
+              <div class="video-play-overlay">
+                <div class="video-play-btn-circle">
+                  <i class="fa-solid fa-play"></i>
+                </div>
+              </div>
+              <span class="video-platform-badge">
+                <i class="${(publisher && publisher.toLowerCase().includes('youtube')) || isYt ? 'fa-brands fa-youtube' : 'fa-solid fa-play'}"></i> ${escapeHtml(publisher)}
+              </span>
+              <span class="video-duration-badge">
+                <i class="fa-solid fa-film me-1" style="font-size:0.65rem;"></i>${escapeHtml(duration)}
+              </span>
+            </a>
+            <div class="video-info">
+              <div class="video-publisher-row">
+                <span class="video-publisher">
+                  <span class="publisher-avatar"><i class="fa-solid fa-circle-play"></i></span>
+                  <span>${escapeHtml(publisher)}</span>
+                  <i class="fa-solid fa-circle-check text-primary" style="font-size:0.75rem;"></i>
+                </span>
+                <span style="font-size: 0.72rem; color: var(--ink-muted); font-weight: 600;">HD Video</span>
+              </div>
+              <h2 class="result-title">
+                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || 'Untitled Video')}</a>
+              </h2>
+              <p class="result-snippet">${escapeHtml(item.description || 'Watch high-definition video highlights, documentaries, tutorials, and full presentations on Hind.')}</p>
+              <div class="video-footer-actions">
+                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="video-watch-btn">
+                  <i class="fa-solid fa-circle-play"></i> Watch Video
+                </a>
+                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="video-ext-btn" title="Open video URL">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+        `;
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    // Render News Results
+    function renderNewsResults(items, query) {
+      let html = `
+        <div class="search-meta-bar">
+          <span>Found ${items.length} news stories for <strong class="search-meta-query">${escapeHtml(query)}</strong></span>
+        </div>
+        <div class="news-list">
+      `;
+      items.forEach(item => {
+        const safeUrl = sanitizeUrl(item.url);
+        const dateStr = formatDate(item.date);
+        html += `
+          <article class="news-card">
+            <div class="news-meta-top">
+              <span class="news-source-badge">${escapeHtml(item.source || 'News')}</span>
+              ${dateStr ? `<span class="news-date">• ${escapeHtml(dateStr)}</span>` : ''}
+            </div>
+            <h2 class="result-title">
+              <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || 'News story')}</a>
+            </h2>
+            <p class="result-snippet">${escapeHtml(item.snippet || '')}</p>
+          </article>
+        `;
+      });
+      html += `</div>`;
+      return html;
+    }
+
+    // Render Multi-Category (Universal / All) Results
+    function renderAllResults(data, query) {
+      let html = `
+        <div class="search-meta-bar">
+          <span>Universal search results for <strong class="search-meta-query">${escapeHtml(query)}</strong></span>
+        </div>
+      `;
+
+      const webItems = Array.isArray(data.web) ? data.web : [];
+      const imageItems = Array.isArray(data.images) ? data.images : [];
+      const videoItems = Array.isArray(data.videos) ? data.videos : [];
+      const newsItems = Array.isArray(data.news) ? data.news : [];
+
+      // Top 3 Web Results
+      if (webItems.length > 0) {
+        webItems.slice(0, 3).forEach(item => {
+          const safeUrl = sanitizeUrl(item.url);
+          const domain = getDomain(item.url);
+          html += `
+            <article class="web-result-card">
+              <div class="result-cite-row">
+                <i class="fa-solid fa-globe" style="font-size: 0.75rem; opacity: 0.7;"></i>
+                <span class="result-domain">${escapeHtml(domain)}</span>
+                <span class="result-url-path">${escapeHtml(truncateUrl(item.url))}</span>
+              </div>
+              <h2 class="result-title">
+                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || 'Untitled')}</a>
+              </h2>
+              <p class="result-snippet">${escapeHtml(item.snippet || '')}</p>
+            </article>
+          `;
+        });
+      }
+
+      // Images preview strip
+      if (imageItems.length > 0) {
+        html += `
+          <section class="section-block">
+            <div class="section-header">
+              <span><i class="fa-regular fa-image me-2 text-primary"></i>Images for ${escapeHtml(query)}</span>
+              <a href="#" onclick="event.preventDefault(); navigateToSearch('${escapeHtml(query)}', 'images')">View all images <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+            <div class="images-strip" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.65rem;">
+        `;
+        imageItems.slice(0, 6).forEach(item => {
+          const safeImg = sanitizeUrl(item.image || item.thumbnail);
+          const safeThumb = sanitizeUrl(item.thumbnail || item.image);
+          html += `
+            <a href="${safeImg}" target="_blank" rel="noopener noreferrer" class="image-strip-thumb" style="border-radius: 8px; overflow: hidden; height: 100px; display: block; background: rgba(0,0,0,0.05);" title="${escapeHtml(item.title)}">
+              <img src="${safeThumb}" alt="${escapeHtml(item.title || 'Image')}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" onerror="this.style.display='none'" />
+            </a>
+          `;
+        });
+        html += `</div></section>`;
+      }
+
+      // Videos preview
+      if (videoItems.length > 0) {
+        html += `
+          <section class="section-block">
+            <div class="section-header">
+              <span><i class="fa-solid fa-play me-2 text-danger"></i>Featured Videos for ${escapeHtml(query)}</span>
+              <a href="#" onclick="event.preventDefault(); navigateToSearch('${escapeHtml(query)}', 'videos')">View all videos <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+        `;
+        videoItems.slice(0, 3).forEach(item => {
+          const safeUrl = sanitizeUrl(item.url);
+          const vid = item.videoId || getYouTubeId(item.url);
+          let safeThumb = sanitizeUrl(item.thumbnail);
+          if (vid && (!safeThumb || safeThumb === '#' || safeThumb.includes('placeholder'))) {
+            safeThumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+          } else if (!safeThumb || safeThumb === '#') {
+            safeThumb = 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&q=80';
+          }
+          const publisher = item.publisher || 'YouTube';
+          const isYt = !!vid;
+
+          html += `
+            <div class="video-card">
+              <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="video-thumb-link" style="height: 155px;" title="Play ${escapeHtml(item.title || 'Video')}">
+                <img src="${safeThumb}" alt="${escapeHtml(item.title || 'Video')}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&q=80'" />
+                <div class="video-play-overlay">
+                  <div class="video-play-btn-circle" style="width: 44px; height: 44px; font-size: 1rem;">
+                    <i class="fa-solid fa-play"></i>
+                  </div>
+                </div>
+                <span class="video-duration-badge" style="font-size: 0.68rem; padding: 2px 6px;">${escapeHtml(item.duration || 'HD')}</span>
+              </a>
+              <div class="video-info" style="padding: 0.85rem 1rem 1rem;">
+                <div class="video-publisher-row">
+                  <span class="video-publisher" style="font-size: 0.76rem;">
+                    <span class="publisher-avatar" style="width: 18px; height: 18px; font-size: 0.6rem;"><i class="fa-solid fa-circle-play"></i></span>
+                    <span>${escapeHtml(publisher)}</span>
+                  </span>
+                </div>
+                <h3 class="result-title" style="font-size: 0.95rem; margin: 0;">
+                  <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || 'Video')}</a>
+                </h3>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div></section>`;
+      }
+
+      // News preview
+      if (newsItems.length > 0) {
+        html += `
+          <section class="section-block">
+            <div class="section-header">
+              <span><i class="fa-regular fa-newspaper me-2 text-success"></i>Latest News for ${escapeHtml(query)}</span>
+              <a href="#" onclick="event.preventDefault(); navigateToSearch('${escapeHtml(query)}', 'news')">View all news <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+        `;
+        newsItems.slice(0, 2).forEach(item => {
+          const safeUrl = sanitizeUrl(item.url);
+          const dateStr = formatDate(item.date);
+          html += `
+            <div class="news-card" style="padding: 0.85rem 1rem;">
+              <div class="news-meta-top">
+                <span class="news-source-badge">${escapeHtml(item.source || 'News')}</span>
+                ${dateStr ? `<span class="news-date">• ${escapeHtml(dateStr)}</span>` : ''}
+              </div>
+              <h3 class="result-title" style="font-size: 1rem; margin-bottom: 0.2rem;">
+                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || 'News')}</a>
+              </h3>
+              <p class="result-snippet" style="font-size: 0.86rem;">${escapeHtml(item.snippet || '')}</p>
+            </div>
+          `;
+        });
+        html += `</div></section>`;
+      }
+
+      // Remaining Web Results
+      if (webItems.length > 3) {
+        webItems.slice(3).forEach(item => {
+          const safeUrl = sanitizeUrl(item.url);
+          const domain = getDomain(item.url);
+          html += `
+            <article class="web-result-card">
+              <div class="result-cite-row">
+                <i class="fa-solid fa-globe" style="font-size: 0.75rem; opacity: 0.7;"></i>
+                <span class="result-domain">${escapeHtml(domain)}</span>
+                <span class="result-url-path">${escapeHtml(truncateUrl(item.url))}</span>
+              </div>
+              <h2 class="result-title">
+                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || 'Untitled')}</a>
+              </h2>
+              <p class="result-snippet">${escapeHtml(item.snippet || '')}</p>
+            </article>
+          `;
+        });
+      }
+
+      return html;
+    }
+
+    // Render Empty State
+    function renderEmptyState(query) {
+      return `
+        <div class="status-card">
+          <div class="status-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <div class="status-title">No results found for "${escapeHtml(query)}"</div>
+          <div class="status-desc">
+            Try checking your spelling, using more general search terms, or exploring different categories like Images, Videos, or News.
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Empty Query Prompt
+    function renderEmptyPrompt() {
+      return `
+        <div class="status-card">
+          <div class="status-icon" style="color: var(--blue);"><i class="fa-solid fa-compass"></i></div>
+          <div class="status-title">Search Bharat &amp; the Web</div>
+          <div class="status-desc">
+            Enter a search topic, question, or keyword in the search box above to explore web results, images, videos, and news.
+          </div>
+        </div>
+      `;
+    }
+
+    // Fallback Client-Side Direct Search (Invidious API for videos, Wikipedia for web/news/images)
+    async function performFallbackSearch(trimmed, type, page = 1) {
+      const container = document.getElementById('searchResultsContainer');
+      try {
+        if (type === 'images') {
+          const offset = (page - 1) * 25;
+          const wikiImgUrl = `https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(trimmed)}&gsrlimit=25&gsroffset=${offset}&prop=pageimages|info&inprop=url&pithumbsize=500&format=json&origin=*`;
+          const res = await fetch(wikiImgUrl);
+          const data = await res.json();
+          const items = [];
+          if (data && data.query && data.query.pages) {
+            Object.values(data.query.pages).forEach(p => {
+              if (p.thumbnail && p.thumbnail.source) {
+                items.push({
+                  title: p.title || 'Image',
+                  image: p.thumbnail.source,
+                  thumbnail: p.thumbnail.source,
+                  source: p.fullurl || `https://en.wikipedia.org/wiki/${encodeURIComponent(p.title)}`
+                });
+              }
+            });
+          }
+          if (items.length > 0) {
+            const paginHtml = renderPagination(page, 50, true);
+            container.innerHTML = renderImageResults(items, trimmed) + paginHtml;
+          } else {
+            container.innerHTML = renderEmptyState(trimmed);
+          }
+          return;
+        }
+
+        if (type === 'videos') {
+          // Client-side fallback for videos: Direct links to real video queries
+          const paginHtml = renderPagination(page, 50, true);
+          container.innerHTML = `
+            <div class="status-card">
+              <div class="status-icon" style="color: var(--blue);"><i class="fa-solid fa-film"></i></div>
+              <div class="status-title">Videos for "${escapeHtml(trimmed)}"</div>
+              <div class="status-desc" style="max-width:500px;">
+                Explore real video highlights, documentaries, and full presentations:
+              </div>
+              <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.25rem;">
+                <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(trimmed)}"
+                   target="_blank" rel="noopener noreferrer" class="video-watch-btn"
+                   style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.4rem;border-radius:24px;text-decoration:none;background:#ff0000;color:#fff;">
+                  <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                </a>
+                <a href="https://duckduckgo.com/?q=${encodeURIComponent(trimmed)}&iar=videos&iax=videos&ia=videos"
+                   target="_blank" rel="noopener noreferrer" class="video-watch-btn"
+                   style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.4rem;border-radius:24px;text-decoration:none;background:var(--blue);color:#fff;">
+                  <i class="fa-solid fa-play"></i> Watch on DuckDuckGo
+                </a>
+              </div>
+            </div>` + paginHtml;
+          return;
+        }
+
+        if (type === 'news') {
+          const offset = (page - 1) * 20;
+          const wikiNewsUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(trimmed + ' news')}&srlimit=20&sroffset=${offset}&utf8=&format=json&origin=*`;
+          const res = await fetch(wikiNewsUrl);
+          const data = await res.json();
+          const items = [];
+          if (data && data.query && data.query.search) {
+            data.query.search.forEach(s => {
+              items.push({
+                title: s.title,
+                url: `https://en.wikipedia.org/wiki/${encodeURIComponent(s.title)}`,
+                snippet: s.snippet ? s.snippet.replace(/<[^>]+>/g, '') : '',
+                source: 'Wikipedia News',
+                date: s.timestamp
+              });
+            });
+          }
+          if (items.length > 0) {
+            const paginHtml = renderPagination(page, 50, true);
+            container.innerHTML = renderNewsResults(items, trimmed) + paginHtml;
+          } else {
+            container.innerHTML = renderEmptyState(trimmed);
+          }
+          return;
+        }
+
+        // Default: Web / All
+        const sroffset = (page - 1) * 25;
+        const [wikiRes, ddgRes] = await Promise.allSettled([
+          fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(trimmed)}&srlimit=25&sroffset=${sroffset}&utf8=&format=json&origin=*`).then(r => r.json()),
+          page === 1 ? fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(trimmed)}&format=json&pretty=1`).then(r => r.json()) : Promise.resolve(null)
+        ]);
+
+        const webItems = [];
+
+        if (page === 1 && ddgRes.status === 'fulfilled' && ddgRes.value) {
+          const ddg = ddgRes.value;
+          if (ddg.AbstractText && ddg.AbstractURL) {
+            webItems.push({ title: ddg.Heading || trimmed, url: ddg.AbstractURL, snippet: ddg.AbstractText });
+          }
+          if (Array.isArray(ddg.RelatedTopics)) {
+            ddg.RelatedTopics.forEach(t => {
+              if (t.FirstURL && t.Text) {
+                webItems.push({
+                  title: t.Text.split(' - ')[0] || t.Text.substring(0, 60),
+                  url: t.FirstURL,
+                  snippet: t.Text
+                });
+              }
+            });
+          }
+        }
+
+        if (wikiRes.status === 'fulfilled' && wikiRes.value && wikiRes.value.query && wikiRes.value.query.search) {
+          wikiRes.value.query.search.forEach(s => {
+            webItems.push({
+              title: s.title,
+              url: `https://en.wikipedia.org/wiki/${encodeURIComponent(s.title)}`,
+              snippet: s.snippet ? s.snippet.replace(/<[^>]+>/g, '') : ''
+            });
+          });
+        }
+
+        if (webItems.length > 0) {
+          const paginHtml = renderPagination(page, 50, true);
+          if (type === 'all') {
+            container.innerHTML = renderAllResults({ web: webItems, images: [], videos: [], news: [] }, trimmed) + paginHtml;
+          } else {
+            container.innerHTML = renderWebResults(webItems, trimmed) + paginHtml;
+          }
+        } else {
+          container.innerHTML = renderEmptyState(trimmed);
+        }
+      } catch (fallbackErr) {
+        console.error('Fallback search error:', fallbackErr);
+        container.innerHTML = renderEmptyState(trimmed);
+      }
+    }
+
+
+    // ── GOOGLE-STYLE PAGINATION COMPONENT ──
+    let currentPage = 1;
+    let currentTotalPages = 50;
+    let currentHasNext = true;
+
+    function renderPagination(page, totalPages = 50, hasNext = true) {
+      const maxP = Math.min(50, totalPages || 50);
+      let html = `<nav class="hind-pagination" aria-label="Search results pages">`;
+
+      // Previous button
+      if (page > 1) {
+        html += `<button type="button" class="page-btn page-nav-btn prev" onclick="goToPage(${page - 1})"><i class="fa-solid fa-chevron-left me-1"></i> Previous</button>`;
+      } else {
+        html += `<button type="button" class="page-btn page-nav-btn prev disabled" disabled><i class="fa-solid fa-chevron-left me-1"></i> Previous</button>`;
+      }
+
+      html += `<div class="page-numbers-group">`;
+
+      // Dynamic sliding window of 10 pages
+      let startPage = Math.max(1, page - 4);
+      let endPage = Math.min(maxP, startPage + 9);
+      if (endPage - startPage < 9) {
+        startPage = Math.max(1, endPage - 9);
+      }
+
+      if (startPage > 1) {
+        html += `<button type="button" class="page-btn page-num" onclick="goToPage(1)">1</button>`;
+        if (startPage > 2) {
+          html += `<span class="page-ellipsis">...</span>`;
+        }
+      }
+
+      for (let p = startPage; p <= endPage; p++) {
+        if (p === page) {
+          html += `<span class="page-btn page-num active" aria-current="page">${p}</span>`;
+        } else {
+          html += `<button type="button" class="page-btn page-num" onclick="goToPage(${p})">${p}</button>`;
+        }
+      }
+
+      if (endPage < maxP) {
+        if (endPage < maxP - 1) {
+          html += `<span class="page-ellipsis">...</span>`;
+        }
+        html += `<button type="button" class="page-btn page-num" onclick="goToPage(${maxP})">${maxP}</button>`;
+      }
+
+      html += `</div>`;
+
+      // Next button (accessible up to maxP)
+      if (page < maxP) {
+        html += `<button type="button" class="page-btn page-nav-btn next" onclick="goToPage(${page + 1})">Next <i class="fa-solid fa-chevron-right ms-1"></i></button>`;
+      } else {
+        html += `<button type="button" class="page-btn page-nav-btn next disabled" disabled>Next <i class="fa-solid fa-chevron-right ms-1"></i></button>`;
+      }
+
+      html += `</nav>`;
+      return html;
+    }
+
+    window.goToPage = function (targetPage) {
+      if (targetPage < 1 || targetPage > 50 || targetPage === currentPage) return;
+      const q = currentQuery;
+      const type = currentType;
+      const newUrl = `search.html?q=${encodeURIComponent(q)}${type !== 'web' ? '&type=' + encodeURIComponent(type) : ''}&page=${targetPage}`;
+      window.history.pushState({ q: q, type: type, page: targetPage }, '', newUrl);
+      performSearch(q, type, targetPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // Perform Search API Request with Page support
+    async function performSearch(query, type = 'web', page = 1) {
+      const trimmed = (query || '').trim();
+      currentQuery = trimmed;
+      currentType = type;
+      currentPage = page;
+      setActiveTabUI(type);
+
+      const container = document.getElementById('searchResultsContainer');
+
+      if (!trimmed) {
+        document.title = 'Search - Hind';
+        container.innerHTML = renderEmptyPrompt();
+        return;
+      }
+
+      document.title = `${trimmed}${page > 1 ? ` - Page ${page}` : ''} - Hind Search`;
+
+      if (searchAbortController) {
+        searchAbortController.abort();
+      }
+      searchAbortController = new AbortController();
+
+      renderLoadingSkeletons(trimmed, type);
+
+      const endpoint = type === 'videos'
+        ? `${API_BASE_URL}/api/videos?q=${encodeURIComponent(trimmed)}&page=${page}&limit=25`
+        : `${API_BASE_URL}/api/search?q=${encodeURIComponent(trimmed)}&type=${encodeURIComponent(type)}&page=${page}&limit=25`;
+
+      try {
+        const fetchTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Backend timeout')), 12000));
+        const fetchPromise = fetch(endpoint, { signal: searchAbortController.signal });
+        const response = await Promise.race([fetchPromise, fetchTimeout]);
+
+        if (!response.ok) {
+          throw new Error(`Server returned HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        let hasResults = false;
+        let renderedHtml = '';
+        currentHasNext = data.has_next !== false;
+        currentTotalPages = data.total_pages || 50;
+
+        if (type === 'images') {
+          const items = Array.isArray(data.images) ? data.images : [];
+          hasResults = items.length > 0;
+          if (hasResults) renderedHtml = renderImageResults(items, trimmed);
+        } else if (type === 'videos') {
+          const items = Array.isArray(data.videos) ? data.videos : [];
+          const status = data.status || (items.length > 0 ? 'ok' : 'no_results');
+
+          if (status === 'temporary_error') {
+            container.innerHTML = `
+              <div class="status-card">
+                <div class="status-icon" style="color: var(--ink-muted);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="status-title">${escapeHtml(data.message || 'Video search is temporarily unavailable. Please try again later.')}</div>
+                <div style="margin-top: 1rem;">
+                  <button type="button" class="video-watch-btn" onclick="performSearch('${escapeHtml(trimmed)}', 'videos', ${page})" style="background:var(--blue);color:#fff;border:none;cursor:pointer;padding:0.6rem 1.4rem;border-radius:24px;font-weight:600;">
+                    <i class="fa-solid fa-rotate-right me-1"></i> Try Again
+                  </button>
+                </div>
+              </div>
+            `;
+            return;
+          } else if (status === 'no_results' || items.length === 0) {
+            container.innerHTML = `
+              <div class="status-card">
+                <div class="status-icon"><i class="fa-solid fa-film"></i></div>
+                <div class="status-title">${escapeHtml(data.message || 'No videos found for this search.')}</div>
+                <div class="status-desc">
+                  Try checking your spelling, using more general search terms, or exploring different categories.
+                </div>
+              </div>
+            `;
+            return;
+          } else {
+            hasResults = true;
+            renderedHtml = renderVideoResults(items, trimmed);
+          }
+        } else if (type === 'news') {
+          const items = Array.isArray(data.news) ? data.news : [];
+          hasResults = items.length > 0;
+          if (hasResults) renderedHtml = renderNewsResults(items, trimmed);
+        } else if (type === 'all') {
+          const hasWeb = Array.isArray(data.web) && data.web.length > 0;
+          const hasImg = Array.isArray(data.images) && data.images.length > 0;
+          const hasVid = Array.isArray(data.videos) && data.videos.length > 0;
+          const hasNews = Array.isArray(data.news) && data.news.length > 0;
+          hasResults = hasWeb || hasImg || hasVid || hasNews;
+          if (hasResults) renderedHtml = renderAllResults(data, trimmed);
+        } else {
+          const items = Array.isArray(data.web) ? data.web : [];
+          hasResults = items.length > 0;
+          if (hasResults) renderedHtml = renderWebResults(items, trimmed);
+        }
+
+        if (hasResults) {
+          const paginationHtml = renderPagination(page, currentTotalPages || 50, true);
+          container.innerHTML = renderedHtml + paginationHtml;
+        } else {
+          await performFallbackSearch(trimmed, type, page);
+        }
+
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        console.warn('Backend unavailable, using direct fallback:', err.message);
+        await performFallbackSearch(trimmed, type, page);
+      }
+    }
+
+    async function triggerAiAnswer(query) {
+      const aiAnswerBox = document.getElementById('aiSearchAnswer');
+      const aiAnswerContent = document.getElementById('aiSearchAnswerContent');
+      const quotaBadge = document.getElementById('aiSearchQuotaBadge');
+
+      if (!query || !query.trim()) {
+        aiAnswerBox.style.display = 'none';
+        return;
+      }
+
+      // Identify client IP and check daily quota (30 searches/day per IP)
+      let clientIp = 'default';
+      try {
+        if (typeof getSearchClientIp === 'function') {
+          clientIp = await getSearchClientIp();
+        }
+      } catch (e) { }
+
+      // If 30 AI searches limit is reached: pause AI answers for the day
+      if (typeof canPerformSearchAi === 'function' && !canPerformSearchAi(clientIp)) {
+        aiAnswerBox.style.display = 'block';
+        if (quotaBadge) {
+          quotaBadge.innerHTML = `<span style="color:#ef4444;"><i class="fa-solid fa-circle-pause me-1"></i>Limit reached (0/30)</span>`;
+        }
+        aiAnswerContent.innerHTML = `
+          <div style="display:flex;align-items:center;gap:0.65rem;color:var(--ink-muted);font-size:0.92rem;line-height:1.5;">
+            <i class="fa-solid fa-hourglass-half text-warning" style="font-size:1.2rem;flex-shrink:0;"></i>
+            <span><strong>Daily limit reached:</strong> You have used your 30 AI search answers for today on this IP. AI answers are paused and will resume tomorrow. Search results are shown below.</span>
+          </div>
+        `;
+        return;
+      }
+
+      const remainingBefore = typeof getSearchAiRemaining === 'function' ? getSearchAiRemaining(clientIp) : 30;
+      if (quotaBadge) {
+        quotaBadge.innerHTML = `<span style="color:var(--purple);font-weight:700;"><i class="fa-solid fa-bolt text-warning me-1"></i>${remainingBefore}/30 AI searches left</span>`;
+      }
+
+      aiAnswerBox.style.display = 'block';
+      aiAnswerContent.innerHTML = `<div class="ai-typing-dots"><span></span><span></span><span></span></div>&nbsp;Generating answer...`;
+
+      try {
+        const preferredModel = (document.getElementById('shrishtiModelSelect') && document.getElementById('shrishtiModelSelect').value) || 'lemon-pineapple-a';
+        const result = await requestShrishtiAiWithCushion(query, preferredModel);
+
+        // Increment daily search quota for IP
+        if (typeof incrementSearchAiQuota === 'function') {
+          incrementSearchAiQuota(clientIp);
+        }
+        const remainingAfter = typeof getSearchAiRemaining === 'function' ? getSearchAiRemaining(clientIp) : (remainingBefore - 1);
+
+        if (quotaBadge) {
+          quotaBadge.innerHTML = `<span style="color:var(--ink-muted);font-weight:600;"><i class="fa-solid fa-bolt text-warning me-1"></i>${remainingAfter}/30 left today</span>`;
+        }
+
+        let badgeHeader = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:0.75rem;">
+          <span style="font-weight:700;color:var(--purple);"><i class="fa-solid fa-microchip me-1"></i>${escapeHtml(result.modelUsed)}${result.cushioned ? ' (cushioned)' : ''}</span>
+          <span style="color:var(--ink-muted);font-weight:600;">${remainingAfter}/30 daily searches left</span>
+        </div>`;
+
+        aiAnswerContent.innerHTML = badgeHeader + escapeHtml(result.content).replace(/\n/g, '<br>');
+      } catch (err) {
+        aiAnswerContent.textContent = 'AI answer unavailable right now: ' + (err.message || 'Please try again later.');
+      }
+    }
+
+    // Navigate to Search with URL update
+    function navigateToSearch(query, type, page = 1) {
+      const trimmed = (query || '').trim();
+      const currentParamType = (type === 'all' || type === 'images' || type === 'videos' || type === 'news') ? type : 'web';
+      const targetPage = page || 1;
+      const searchUrl = `search.html?q=${encodeURIComponent(trimmed)}${currentParamType !== 'web' ? '&type=' + encodeURIComponent(currentParamType) : ''}${targetPage > 1 ? '&page=' + targetPage : ''}`;
+      window.history.pushState({ q: trimmed, type: currentParamType, page: targetPage }, '', searchUrl);
+      if (trimmed && targetPage === 1) saveToHistory(trimmed);
+      if (targetPage === 1) triggerAiAnswer(trimmed);
+      performSearch(trimmed, currentParamType, targetPage);
+    }
+
+    // Tab buttons event listeners
+    document.querySelectorAll('.search-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabType = btn.dataset.type;
+        const q = document.getElementById('searchInputHeader').value.trim() || currentQuery;
+        if (!q) {
+          currentType = tabType;
+          setActiveTabUI(tabType);
+          return;
+        }
+        navigateToSearch(q, tabType, 1);
+      });
+    });
+
+    // Header search form submit (resets to page 1)
+    const searchHeaderForm = document.getElementById('searchHeaderForm');
+    searchHeaderForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = document.getElementById('searchInputHeader').value.trim();
+      if (!q) return;
+      const targetType = (currentType === 'images' || currentType === 'videos' || currentType === 'news') ? currentType : 'web';
+      navigateToSearch(q, targetType, 1);
+    });
+
+    // Handle browser Back / Forward buttons
+    window.addEventListener('popstate', () => {
+      initFromUrl();
+    });
+
+    // Initialize from URL parameters
+    function initFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const q = urlParams.get('q') || '';
+      const rawType = (urlParams.get('type') || '').toLowerCase();
+      const page = parseInt(urlParams.get('page')) || 1;
+      const type = (rawType === 'images' || rawType === 'videos' || rawType === 'news' || rawType === 'all') ? rawType : 'web';
+
+      document.getElementById('searchInputHeader').value = q;
+      setActiveTabUI(type);
+
+      if (q) {
+        if (page === 1) saveToHistory(q);
+        if (page === 1) triggerAiAnswer(q);
+        performSearch(q, type, page);
+      } else {
+        performSearch('', type, 1);
+      }
+    }
+
+    // Run on page load
+    initFromUrl();
+
+    // ── AI Chatbot FAB ──
+    const aiFab = document.getElementById('aiFab');
+    const aiPanel = document.getElementById('aiPanel');
+    const aiFabIcon = document.getElementById('aiFabIcon');
+    const aiBody = document.getElementById('aiBody');
+    const aiInput = document.getElementById('aiInput');
+
+    aiFab.addEventListener('click', () => {
+      const isOpen = aiPanel.classList.contains('open');
+      aiPanel.classList.toggle('open');
+      aiFab.classList.toggle('active');
+      aiFabIcon.className = isOpen ? 'fa-solid fa-robot' : 'fa-solid fa-xmark';
+      if (!isOpen) setTimeout(() => aiInput.focus(), 300);
+    });
+
+    document.addEventListener('click', e => {
+      if (!aiFab.contains(e.target) && !aiPanel.contains(e.target)) {
+        aiPanel.classList.remove('open');
+        aiFab.classList.remove('active');
+        aiFabIcon.className = 'fa-solid fa-robot';
+      }
+    });
+
+    let _aiSelectedFile = null;
+
+    function handleAiFileSelect(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      _aiSelectedFile = file;
+      const bar = document.getElementById('aiPendingAttachment');
+      const nameEl = document.getElementById('aiAttachedFileName');
+      if (bar && nameEl) {
+        nameEl.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+        bar.style.display = 'flex';
+      }
+      const inputEl = document.getElementById('aiInput');
+      if (inputEl) {
+        inputEl.placeholder = 'Ask questions, or press Enter for full summary...';
+        inputEl.focus();
+      }
+    }
+
+    function clearAiAttachment() {
+      _aiSelectedFile = null;
+      const fileInput = document.getElementById('aiFileInput');
+      if (fileInput) fileInput.value = '';
+      const bar = document.getElementById('aiPendingAttachment');
+      if (bar) bar.style.display = 'none';
+      const inputEl = document.getElementById('aiInput');
+      if (inputEl) inputEl.placeholder = 'Ask Shrishti AI, or /image to draw...';
+    }
+
+    function toggleImageGenPrompt() {
+      const inputEl = document.getElementById('aiInput');
+      if (!inputEl) return;
+      if (inputEl.value.startsWith('/image ')) {
+        inputEl.value = '';
+        inputEl.placeholder = 'Ask Shrishti AI, or /image to draw...';
+      } else {
+        inputEl.value = '/image ';
+        inputEl.focus();
+      }
+    }
+
+    async function sendAiMessage() {
+      const text = aiInput.value.trim();
+      const hasFile = !!_aiSelectedFile;
+
+      if (!text && !hasFile) return;
+
+      const isImageRequest = !hasFile && (
+        text.startsWith('/image ') ||
+        text.toLowerCase().startsWith('generate image ') ||
+        text.toLowerCase().startsWith('draw an image ') ||
+        text.toLowerCase().startsWith('draw ')
+      );
+
+      const chosenModel = (document.getElementById('shrishtiModelSelect') && document.getElementById('shrishtiModelSelect').value) || 'lemon-pineapple-a';
+
+      // ── 1. FILE ANALYSIS FLOW (costs 5 Pro Credits) ──
+      if (hasFile) {
+        const fileToAnalyze = _aiSelectedFile;
+        clearAiAttachment();
+
+        if (typeof canSpendProCredits === 'function' && !canSpendProCredits(5)) {
+          const rem = typeof getShrishtiRemainingProCredits === 'function' ? getShrishtiRemainingProCredits() : 0;
+          const errDiv = document.createElement('div');
+          errDiv.className = 'ai-msg bot';
+          errDiv.innerHTML = `<i class="fa-solid fa-circle-exclamation text-warning me-1"></i><strong>Not enough Pro Credits:</strong> File analysis requires <strong>5 credits</strong> (you have ${rem}/10 left today). Credits reset daily at midnight!`;
+          aiBody.appendChild(errDiv);
+          aiBody.scrollTop = aiBody.scrollHeight;
+          return;
+        }
+
+        const userDiv = document.createElement('div');
+        userDiv.className = 'ai-msg user';
+        userDiv.innerHTML = `<div style="display:inline-flex;align-items:center;gap:0.35rem;margin-bottom:4px;padding:3px 8px;background:rgba(255,255,255,0.2);border-radius:8px;font-size:0.75rem;"><i class="fa-solid fa-paperclip"></i> ${escapeHtml(fileToAnalyze.name)}</div><br>${escapeHtml(text || 'Please analyze and summarize this file.')}`;
+        aiBody.appendChild(userDiv);
+
+        aiInput.value = '';
+        aiBody.scrollTop = aiBody.scrollHeight;
+
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'ai-msg bot';
+        loadingDiv.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-primary"></i> Reading & analyzing document (5 credits)...';
+        aiBody.appendChild(loadingDiv);
+        aiBody.scrollTop = aiBody.scrollHeight;
+
+        try {
+          const result = await analyzeShrishtiFile(fileToAnalyze, text, chosenModel, (status) => {
+            loadingDiv.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-primary"></i> ${escapeHtml(status)}`;
+          });
+          loadingDiv.remove();
+
+          const botDiv = document.createElement('div');
+          botDiv.className = 'ai-msg bot';
+          let previewHtml = '';
+          if (result.fileType === 'image' && result.dataUrl) {
+            previewHtml = `<div style="margin-bottom:8px;"><img src="${result.dataUrl}" style="max-width:100%;max-height:160px;border-radius:8px;border:1px solid var(--border);display:block;" alt="Analyzed image" /></div>`;
+          }
+          const badgeHtml = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:0.5rem;"><span style="font-size:0.68rem;padding:2px 8px;border-radius:10px;background:rgba(139,92,246,0.15);color:var(--purple-dark);font-weight:700;"><i class="fa-solid fa-file-lines me-1"></i>${escapeHtml(result.fileName)} (${result.fileExt.toUpperCase()})</span><div style="display:flex;align-items:center;gap:0.4rem;"><span style="font-size:0.68rem;padding:2px 7px;border-radius:8px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;">-5 Credits (⚡ ${result.creditsRemaining}/10 left)</span><button type="button" class="ai-msg-speak-btn" onclick="toggleSpeakAiMessage(this)" title="Listen to summary"><i class="fa-solid fa-volume-high"></i></button></div></div>`;
+          botDiv.innerHTML = previewHtml + badgeHtml + escapeHtml(result.content).replace(/\n/g, '<br>');
+          aiBody.appendChild(botDiv);
+        } catch (err) {
+          loadingDiv.remove();
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'ai-msg bot';
+          errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-danger me-1"></i> ' + escapeHtml(err.message || 'Failed to analyze file.');
+          aiBody.appendChild(errorDiv);
+        }
+        aiBody.scrollTop = aiBody.scrollHeight;
+        return;
+      }
+
+      // ── 2. IMAGE GENERATION FLOW (costs 2 Pro Credits) ──
+      if (isImageRequest) {
+        let promptText = text;
+        if (text.startsWith('/image ')) promptText = text.slice(7).trim();
+        else if (text.toLowerCase().startsWith('generate image of ')) promptText = text.slice(18).trim();
+        else if (text.toLowerCase().startsWith('generate image ')) promptText = text.slice(15).trim();
+        else if (text.toLowerCase().startsWith('draw an image of ')) promptText = text.slice(18).trim();
+        else if (text.toLowerCase().startsWith('draw ')) promptText = text.slice(5).trim();
+
+        if (!promptText) promptText = 'Vibrant scenery in Bharat, high detailed, digital art';
+
+        if (typeof canSpendProCredits === 'function' && !canSpendProCredits(2)) {
+          const rem = typeof getShrishtiRemainingProCredits === 'function' ? getShrishtiRemainingProCredits() : 0;
+          const errDiv = document.createElement('div');
+          errDiv.className = 'ai-msg bot';
+          errDiv.innerHTML = `<i class="fa-solid fa-circle-exclamation text-warning me-1"></i><strong>Not enough Pro Credits:</strong> Image generation requires <strong>2 credits</strong> (you have ${rem}/10 left today). Credits reset daily at midnight!`;
+          aiBody.appendChild(errDiv);
+          aiBody.scrollTop = aiBody.scrollHeight;
+          return;
+        }
+
+        const userDiv = document.createElement('div');
+        userDiv.className = 'ai-msg user';
+        userDiv.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles me-1 text-warning"></i> Generate Image: <em>"${escapeHtml(promptText)}"</em>`;
+        aiBody.appendChild(userDiv);
+
+        aiInput.value = '';
+        aiBody.scrollTop = aiBody.scrollHeight;
+
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'ai-msg bot';
+        loadingDiv.innerHTML = '<i class="fa-solid fa-palette fa-spin text-warning"></i> Generating your image (2 credits)...';
+        aiBody.appendChild(loadingDiv);
+        aiBody.scrollTop = aiBody.scrollHeight;
+
+        try {
+          const imgResult = await generateShrishtiImage(promptText);
+          loadingDiv.remove();
+
+          const botDiv = document.createElement('div');
+          botDiv.className = 'ai-msg bot';
+          botDiv.style.maxWidth = '92%';
+          botDiv.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:0.5rem;">
+              <span style="font-size:0.68rem;padding:2px 8px;border-radius:10px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;"><i class="fa-solid fa-palette me-1"></i>AI Generated Image</span>
+              <span style="font-size:0.68rem;padding:2px 7px;border-radius:8px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;">-2 Credits (⚡ ${imgResult.creditsRemaining}/10 left)</span>
+            </div>
+            <div style="position:relative;margin:6px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#000;">
+              <img src="${imgResult.imageUrl}" style="width:100%;height:auto;display:block;border-radius:12px;min-height:180px;object-fit:cover;" alt="${escapeHtml(imgResult.prompt)}" loading="lazy" />
+            </div>
+            <div style="font-size:0.8rem;color:var(--ink-muted);margin-bottom:8px;"><em>"${escapeHtml(imgResult.prompt)}"</em></div>
+            <div style="display:flex;gap:0.5rem;">
+              <a href="${imgResult.imageUrl}" target="_blank" download="shrishti-art.jpg" style="display:inline-flex;align-items:center;gap:0.35rem;padding:0.3rem 0.75rem;border-radius:6px;background:var(--purple);color:#fff;text-decoration:none;font-size:0.75rem;font-weight:700;">
+                <i class="fa-solid fa-download"></i> Download
+              </a>
+              <a href="${imgResult.imageUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:0.35rem;padding:0.3rem 0.75rem;border-radius:6px;background:var(--surface);color:var(--ink);border:1px solid var(--border);text-decoration:none;font-size:0.75rem;font-weight:600;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Res
+              </a>
+            </div>
+          `;
+          aiBody.appendChild(botDiv);
+        } catch (err) {
+          loadingDiv.remove();
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'ai-msg bot';
+          errorDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-danger me-1"></i> ' + escapeHtml(err.message || 'Failed to generate image.');
+          aiBody.appendChild(errorDiv);
+        }
+        aiBody.scrollTop = aiBody.scrollHeight;
+        return;
+      }
+
+      // ── 3. STANDARD QUERY FLOW (15 daily questions) ──
+      if (!canAskShrishti()) {
+        const errDiv = document.createElement('div');
+        errDiv.className = 'ai-msg bot';
+        errDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation text-danger me-1"></i><strong>Daily limit reached:</strong> You have used all 15 questions for today. Please come back tomorrow!';
+        aiBody.appendChild(errDiv);
+        aiBody.scrollTop = aiBody.scrollHeight;
+        return;
+      }
+
+      // User bubble
+      const userDiv = document.createElement('div');
+      userDiv.className = 'ai-msg user';
+      userDiv.textContent = text;
+      aiBody.appendChild(userDiv);
+      aiInput.value = '';
+      aiBody.scrollTop = aiBody.scrollHeight;
+
+      // Loading bubble
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'ai-msg bot';
+      loadingDiv.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Thinking...';
+      aiBody.appendChild(loadingDiv);
+      aiBody.scrollTop = aiBody.scrollHeight;
+
+      try {
+        const result = await requestShrishtiAiWithCushion(text, chosenModel, (fallbackModel) => {
+          loadingDiv.innerHTML = `<i class="fa-solid fa-shield-halved fa-spin text-warning me-1"></i> Cushioning failover to <em>${escapeHtml(fallbackModel)}</em>...`;
+        });
+        loadingDiv.remove();
+
+        // Count against daily limit
+        incrementShrishtiQuota();
+
+        const botDiv = document.createElement('div');
+        botDiv.className = 'ai-msg bot';
+        let badgeHtml = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:0.5rem;"><span style="font-size:0.68rem;padding:2px 8px;border-radius:10px;background:rgba(139,92,246,0.15);color:var(--purple-dark);font-weight:700;"><i class="fa-solid fa-microchip me-1"></i>${escapeHtml(result.modelUsed)}${result.cushioned ? ' (cushioned)' : ''}</span><button type="button" class="ai-msg-speak-btn" onclick="toggleSpeakAiMessage(this)" title="Listen to answer"><i class="fa-solid fa-volume-high"></i></button></div>`;
+        botDiv.innerHTML = badgeHtml + escapeHtml(result.content).replace(/\n/g, '<br>');
+        aiBody.appendChild(botDiv);
+      } catch (err) {
+        loadingDiv.remove();
+        const errDiv = document.createElement('div');
+        errDiv.className = 'ai-msg bot';
+        errDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-danger me-1"></i> ' + escapeHtml(err.message || 'Network error. Please try again.');
+        aiBody.appendChild(errDiv);
+      }
+      aiBody.scrollTop = aiBody.scrollHeight;
+    }
+
+    window.sendAiMessage = sendAiMessage;
+    window.handleAiFileSelect = handleAiFileSelect;
+    window.clearAiAttachment = clearAiAttachment;
+    window.toggleImageGenPrompt = toggleImageGenPrompt;
+
+    // ── Shrishti AI Voice Input ──
+    if (typeof initShrishtiVoiceInput === 'function') {
+      initShrishtiVoiceInput(document.getElementById('aiVoiceBtn'), document.getElementById('aiInput'));
+    }
+
+    // ── Voice Search ──
+    (function () {
+      const micBtn = document.getElementById('voiceMicBtn');
+      const micIcon = document.getElementById('voiceMicIcon');
+      const searchInp = document.getElementById('searchInputHeader');
+      if (!micBtn) return;
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        micBtn.style.display = 'none';
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'hi-IN';
+      recognition.continuous = false;
+      recognition.interimResults = true;
+
+      let listening = false;
+
+      micBtn.addEventListener('click', () => {
+        if (listening) { recognition.stop(); return; }
+        recognition.start();
+      });
+
+      recognition.onstart = () => {
+        listening = true;
+        micBtn.classList.add('listening');
+        micIcon.className = 'fa-solid fa-microphone-lines';
+        micBtn.title = 'Listening... click to stop';
+      };
+
+      recognition.onresult = (event) => {
+        let interim = '', final = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          if (event.results[i].isFinal) final += event.results[i][0].transcript;
+          else interim += event.results[i][0].transcript;
+        }
+        if (interim) searchInp.value = interim;
+        if (final) {
+          searchInp.value = final;
+          window.location.href = 'search.html?q=' + encodeURIComponent(final.trim());
+        }
+      };
+
+      recognition.onerror = recognition.onend = () => {
+        listening = false;
+        micBtn.classList.remove('listening');
+        micIcon.className = 'fa-solid fa-microphone';
+        micBtn.title = 'Voice search';
+      };
+    })();
+
+    // ── Live Recent Searches & Autocomplete Dropdown ──
+    (function initSearchSuggestions() {
+      const HIST_KEY = 'hind_search_history';
+
+      function getHistory() {
+        try {
+          const raw = JSON.parse(localStorage.getItem(HIST_KEY)) || [];
+          return raw.map(function (item) { return (typeof item === 'object' && item.q) ? item.q : String(item); }).filter(Boolean);
+        } catch (_) {
+          return [];
+        }
+      }
+
+      function saveHistory(query) {
+        const q = (query || '').trim();
+        if (!q) return;
+        var raw = [];
+        try { raw = JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch (_) { }
+        raw = raw.map(function (item) { return (typeof item === 'object' && item.q) ? item : { q: String(item), t: Date.now() }; });
+        raw = raw.filter(function (item) { return item.q.toLowerCase() !== q.toLowerCase(); });
+        raw.unshift({ q: q, t: Date.now() });
+        if (raw.length > 50) raw = raw.slice(0, 50);
+        localStorage.setItem(HIST_KEY, JSON.stringify(raw));
+      }
+
+      function deleteHistoryItem(query) {
+        var raw = [];
+        try { raw = JSON.parse(localStorage.getItem(HIST_KEY)) || []; } catch (_) { }
+        raw = raw.filter(function (item) {
+          var itemQ = (typeof item === 'object' && item.q) ? item.q : String(item);
+          return itemQ.toLowerCase() !== query.toLowerCase();
+        });
+        localStorage.setItem(HIST_KEY, JSON.stringify(raw));
+      }
+
+      function clearAllHistory() {
+        localStorage.removeItem(HIST_KEY);
+      }
+
+      // Live autocomplete fetcher (Google Suggest with Wikipedia fallback)
+      let activeJsonpScript = null;
+      let debounceTimer = null;
+
+      function fetchLiveCompletions(query, callback) {
+        const q = (query || '').trim();
+        if (!q) {
+          callback([]);
+          return;
+        }
+
+        const cbName = '__hind_suggest_' + Math.floor(Math.random() * 1000000);
+        let done = false;
+
+        if (activeJsonpScript && activeJsonpScript.parentNode) {
+          activeJsonpScript.parentNode.removeChild(activeJsonpScript);
+          activeJsonpScript = null;
+        }
+
+        const timeout = setTimeout(function () {
+          if (done) return;
+          done = true;
+          cleanup();
+          fetch('https://en.wikipedia.org/w/api.php?action=opensearch&search=' + encodeURIComponent(q) + '&limit=8&namespace=0&format=json&origin=*')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (Array.isArray(data) && Array.isArray(data[1])) {
+                callback(data[1]);
+              } else {
+                callback([]);
+              }
+            })
+            .catch(function () { callback([]); });
+        }, 800);
+
+        function cleanup() {
+          clearTimeout(timeout);
+          try { delete window[cbName]; } catch (_) { }
+          if (activeJsonpScript && activeJsonpScript.parentNode) {
+            activeJsonpScript.parentNode.removeChild(activeJsonpScript);
+            activeJsonpScript = null;
+          }
+        }
+
+        window[cbName] = function (data) {
+          if (done) return;
+          done = true;
+          cleanup();
+          if (Array.isArray(data) && Array.isArray(data[1])) {
+            callback(data[1]);
+          } else {
+            callback([]);
+          }
+        };
+
+        const script = document.createElement('script');
+        script.src = 'https://suggestqueries.google.com/complete/search?client=chrome&q=' + encodeURIComponent(q) + '&callback=' + cbName;
+        script.onerror = function () {
+          if (done) return;
+          done = true;
+          cleanup();
+          fetch('https://en.wikipedia.org/w/api.php?action=opensearch&search=' + encodeURIComponent(q) + '&limit=8&namespace=0&format=json&origin=*')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (Array.isArray(data) && Array.isArray(data[1])) {
+                callback(data[1]);
+              } else {
+                callback([]);
+              }
+            })
+            .catch(function () { callback([]); });
+        };
+        activeJsonpScript = script;
+        document.head.appendChild(script);
+      }
+
+      function setupSuggestionsForInput(inputEl, formEl) {
+        if (!inputEl) return;
+
+        let wrapper = inputEl.closest('.header-search-group') || inputEl.closest('.header-search-form') || inputEl.closest('.search-input-group') || inputEl.parentElement;
+        if (!wrapper) return;
+        wrapper.style.position = 'relative';
+
+        let dropdown = wrapper.querySelector('.suggest-dropdown');
+        if (!dropdown) {
+          dropdown = document.createElement('div');
+          dropdown.className = 'suggest-dropdown';
+          wrapper.appendChild(dropdown);
+        }
+
+        let activeIndex = -1;
+        let currentItems = [];
+
+        function renderList(historyMatches, liveSuggestions, query) {
+          const q = (query || '').trim().toLowerCase();
+
+          const items = [];
+          const seen = new Set();
+
+          historyMatches.forEach(function (text) {
+            const lower = text.toLowerCase();
+            if (!seen.has(lower)) {
+              seen.add(lower);
+              items.push({ text: text, isHistory: true });
+            }
+          });
+
+          liveSuggestions.forEach(function (text) {
+            const lower = text.toLowerCase();
+            if (!seen.has(lower)) {
+              seen.add(lower);
+              items.push({ text: text, isHistory: false });
+            }
+          });
+
+          currentItems = items.slice(0, 10);
+
+          if (currentItems.length === 0) {
+            dropdown.classList.remove('open');
+            dropdown.innerHTML = '';
+            activeIndex = -1;
+            return;
+          }
+
+          let hasHistory = currentItems.some(function (it) { return it.isHistory; });
+
+          let html = '';
+          if (hasHistory && !q) {
+            html += `
+              <div class="suggest-header">
+                <span><i class="fa-regular fa-clock me-1"></i> Recent Searches</span>
+                <button type="button" class="suggest-clear-all" title="Clear all recent searches">
+                  <i class="fa-solid fa-trash-can me-1"></i> Clear All
+                </button>
+              </div>
+            `;
+          } else if (hasHistory && q) {
+            html += `
+              <div class="suggest-header">
+                <span><i class="fa-solid fa-clock-rotate-left me-1"></i> Recent &amp; Suggestions</span>
+                <button type="button" class="suggest-clear-all" title="Clear all recent searches">
+                  <i class="fa-solid fa-trash-can me-1"></i> Clear History
+                </button>
+              </div>
+            `;
+          }
+
+          html += '<ul class="suggest-list">';
+
+          currentItems.forEach(function (item, idx) {
+            let displayHtml = escapeHtml(item.text);
+            if (q) {
+              const reg = new RegExp('(' + escapeRegExp(q) + ')', 'gi');
+              displayHtml = escapeHtml(item.text).replace(reg, '<span class="suggest-match-hl">$1</span>');
+            }
+
+            const iconClass = item.isHistory ? 'fa-regular fa-clock' : 'fa-solid fa-magnifying-glass';
+            const deleteBtn = item.isHistory ? `
+              <button type="button" class="suggest-delete-btn" title="Remove from history" data-query="${escapeHtml(item.text)}">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            ` : `
+              <i class="fa-solid fa-arrow-turn-up suggest-arrow-icon" style="opacity:0.35; font-size:0.75rem; transform: rotate(90deg); margin-right: 4px;"></i>
+            `;
+
+            html += `
+              <li class="suggest-item ${idx === activeIndex ? 'active' : ''}" data-query="${escapeHtml(item.text)}" data-idx="${idx}">
+                <div class="suggest-item-left">
+                  <i class="${iconClass} suggest-item-icon"></i>
+                  <span>${displayHtml}</span>
+                </div>
+                ${deleteBtn}
+              </li>
+            `;
+          });
+
+          html += '</ul>';
+          dropdown.innerHTML = html;
+          dropdown.classList.add('open');
+
+          const clearBtn = dropdown.querySelector('.suggest-clear-all');
+          if (clearBtn) {
+            clearBtn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              const liElements = dropdown.querySelectorAll('.suggest-item');
+              liElements.forEach(function (el) { el.classList.add('removing'); });
+              setTimeout(function () {
+                clearAllHistory();
+                updateSuggestions();
+              }, 200);
+            });
+          }
+
+          dropdown.querySelectorAll('.suggest-delete-btn').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              const queryToDelete = btn.dataset.query;
+              const li = btn.closest('.suggest-item');
+              if (li) {
+                li.classList.add('removing');
+                setTimeout(function () {
+                  deleteHistoryItem(queryToDelete);
+                  updateSuggestions();
+                }, 200);
+              }
+            });
+          });
+
+          dropdown.querySelectorAll('.suggest-item').forEach(function (itemEl) {
+            itemEl.addEventListener('click', function (e) {
+              if (e.target.closest('.suggest-delete-btn')) return;
+              const selectedQuery = itemEl.dataset.query;
+              inputEl.value = selectedQuery;
+              saveHistory(selectedQuery);
+              dropdown.classList.remove('open');
+              if (window.navigateToSearch) {
+                window.navigateToSearch(selectedQuery, 'web');
+              } else if (formEl) {
+                formEl.submit();
+              } else {
+                window.location.href = 'search.html?q=' + encodeURIComponent(selectedQuery);
+              }
+            });
+          });
+        }
+
+        function updateSuggestions() {
+          const rawQ = inputEl.value;
+          const q = rawQ.trim().toLowerCase();
+          const history = getHistory();
+          const historyMatches = history.filter(function (item) {
+            return !q || item.toLowerCase().includes(q);
+          });
+
+          if (!q) {
+            renderList(historyMatches, [], '');
+            return;
+          }
+
+          renderList(historyMatches, [], rawQ);
+
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(function () {
+            fetchLiveCompletions(rawQ, function (liveSuggestions) {
+              if (inputEl.value.trim().toLowerCase() === q) {
+                renderList(historyMatches, liveSuggestions, rawQ);
+              }
+            });
+          }, 120);
+        }
+
+        inputEl.addEventListener('focus', updateSuggestions);
+        inputEl.addEventListener('input', updateSuggestions);
+
+        inputEl.addEventListener('keydown', function (e) {
+          const items = dropdown.querySelectorAll('.suggest-item');
+          if (!dropdown.classList.contains('open') || !items.length) return;
+
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIndex = (activeIndex + 1) % items.length;
+            updateActiveItemClass();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIndex = (activeIndex - 1 + items.length) % items.length;
+            updateActiveItemClass();
+          } else if (e.key === 'Enter' && activeIndex >= 0) {
+            e.preventDefault();
+            const selected = items[activeIndex];
+            if (selected) {
+              const selectedQuery = selected.dataset.query;
+              inputEl.value = selectedQuery;
+              saveHistory(selectedQuery);
+              dropdown.classList.remove('open');
+              if (window.navigateToSearch) {
+                window.navigateToSearch(selectedQuery, 'web');
+              } else if (formEl) {
+                formEl.submit();
+              }
+            }
+          } else if (e.key === 'Escape') {
+            dropdown.classList.remove('open');
+          }
+        });
+
+        function updateActiveItemClass() {
+          const items = dropdown.querySelectorAll('.suggest-item');
+          items.forEach(function (el, idx) {
+            if (idx === activeIndex) {
+              el.classList.add('active');
+            } else {
+              el.classList.remove('active');
+            }
+          });
+        }
+
+        if (formEl) {
+          formEl.addEventListener('submit', function () {
+            if (inputEl.value.trim()) {
+              saveHistory(inputEl.value.trim());
+            }
+          });
+        }
+
+        document.addEventListener('click', function (e) {
+          if (!wrapper.contains(e.target)) {
+            dropdown.classList.remove('open');
+          }
+        });
+      }
+
+      function escapeHtml(str) {
+        return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      }
+
+      function escapeRegExp(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      const headerInput = document.getElementById('searchInputHeader');
+      const headerForm = document.getElementById('searchHeaderForm');
+      if (headerInput) setupSuggestionsForInput(headerInput, headerForm);
+    })();
+  </script>
+  <script src="translate.js"></script>
+</body>
+
+</html>
